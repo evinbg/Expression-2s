@@ -1,4 +1,4 @@
-# Creates holograms that spawn where the user is aiming at when pressing 'E', essentially allowing them to draw
+# Description: Creates holograms that spawn where the user is aiming at when pressing 'E', essentially allowing them to draw
 
 @name Grafiti
 @inputs 
