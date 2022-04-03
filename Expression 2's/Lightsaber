@@ -19,7 +19,7 @@ if(first()){
     Color = vec(0,255,0)
     RGB = 0
     Timer = 0
-    Sound=  1
+    Sound = 1
     Colors = array("Red", "Green", "Blue", "Yellow", "Pink", "Skyblue", "Orange", "Purple", "White", "Black", "RGB")
     
     # Holo that parents to hand, which everything else parents to
