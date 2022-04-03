@@ -30,15 +30,15 @@ if(owner():keyPressed("t") & owner():aimEntity():isValid() & AntiSpam == 1){
     Color = Entity:getColor()
     Alpha = Entity:getAlpha()
     Material = Entity:getMaterial()
+    Height = Entity:height()
+    Check = 1
     holoModel(1,Prop)
     holoMaterial(1,Material)
     holoColor(1,Color)
     holoAlpha(1,Alpha)
-    Height = Entity:height()
-    Check = 1
+    holoScale(1,vec(1,1,1))
     owner():setMaterial("models/effects/vol_light001")
     owner():setColor(0,0,0,0)
-    holoScale(1,vec(1,1,1))
     owner():weapon():setAlpha(0)
     AntiSpam = 0
     timer("spam",1000)
@@ -67,8 +67,8 @@ holoAng(1,ang(0,owner():eyeAngles():yaw(),owner():eyeAngles():roll()))
 if(Check == 1){
     owner():setMaterial("models/effects/vol_light001")
     owner():setColor(0,0,0,0)
-    holoScale(1,vec(1,1,1))
     owner():weapon():setAlpha(0)
+    holoScale(1,vec(1,1,1))
 }
 
 if(Check == 0){
