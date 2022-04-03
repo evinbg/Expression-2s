@@ -17,7 +17,7 @@ if(first()){
     Colors = array("Red", "Green", "Blue", "Yellow", "Pink", "Skyblue", "Orange", "Purple", "White", "Black", "Random", "RGB")
 }
 
-interval(50)
+interval(100)
 runOnChat(1)
 
 holoCreate(1)
@@ -33,16 +33,16 @@ L = owner():lastSaid():lower():explode(" ")
 
 if(On == 1){
     if(owner():keyPressed("e")){
-        A++
         timer("draw",50)
         if(clk("draw")){
+            A++
             holoCreate(A)
+            holoPos(A,owner():aimPos())
+            holoColor(A,Color)
+            holoParent(A,owner():aimEntity())
+            holoDisableShading(A,1)
+            holoScale(A,vec(Scale,Scale,Scale))
         }
-        holoPos(A,owner():aimPos())
-        holoColor(A,Color)
-        holoParent(A,owner():aimEntity())
-        holoDisableShading(A,1)
-        holoScale(A,vec(Scale,Scale,Scale))
     }
 }
 
@@ -178,4 +178,3 @@ if(clk("list")){
         printColor(vec(255,255,255),Colors[I,string])
     }
 }
-
