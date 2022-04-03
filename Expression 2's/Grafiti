@@ -3,7 +3,7 @@
 @name Grafiti
 @inputs 
 @outputs 
-@persist On A I Scale Random Color:vector Colors:array
+@persist On A C I Scale Random RGB Color:vector Colors:array
 @trigger 
 
 if(first()){
@@ -12,7 +12,9 @@ if(first()){
     Color = vec(255,255,255)
     A = 2
     Scale = 1
-    Colors = array("Red", "Green", "Blue", "Yellow", "Pink", "Skyblue", "Orange", "Purple", "White", "Black", "Random")
+    Random = 0
+    RGB = 0
+    Colors = array("Red", "Green", "Blue", "Yellow", "Pink", "Skyblue", "Orange", "Purple", "White", "Black", "Random", "RGB")
 }
 
 interval(50)
@@ -47,6 +49,7 @@ if(On == 1){
 if(chatClk(owner())){
     if(L[1,string] == "/color"){
         Random = 0
+        RGB = 0
         if(L[2,string] == "red"){
             hideChat(1)
             Color = vec(255,0,0)
@@ -102,6 +105,11 @@ if(chatClk(owner())){
             Random = 1
             printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Color: ",vec(random(255),random(255),random(255)),"Random")
         }
+        elseif(L[2,string] == "rgb"){
+            hideChat(1)
+            RGB = 1
+            printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Color: ",vec(random(255),random(255),random(255)),"RGB")
+        }
         else{
             printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Color not found. Type \"/colors\" to see a list of the colors")
         }
@@ -110,6 +118,17 @@ if(chatClk(owner())){
 
 if(Random == 1){
     Color = vec(random(255),random(255),random(255))
+}
+
+RGBColor = hsv2rgb(vec(C*4,1,1))
+
+if(C == 720){
+    C = 0
+}
+
+if(RGB == 1){
+    Color = RGBColor
+    C++
 }
 
 if(chatClk(owner())){
@@ -159,3 +178,4 @@ if(clk("list")){
         printColor(vec(255,255,255),Colors[I,string])
     }
 }
+
