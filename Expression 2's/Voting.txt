@@ -1,3 +1,5 @@
+# Description: Allows the user to utilize chat as a way of collecting votes from other players
+
 @name Voting
 @inputs
 @outputs [Member, MemberVote1, MemberVote2]:array
