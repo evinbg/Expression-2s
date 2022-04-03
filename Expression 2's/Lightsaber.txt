@@ -168,7 +168,6 @@ runOnChat(1)
 runOnLast(1)
 
 L = owner():lastSaid():lower():explode(" ")
-#entity():setPos(owner():toWorld(vec(0,0,10)))
 
 G = owner():keyPressed("G")
 H = owner():keyPressed("H")
