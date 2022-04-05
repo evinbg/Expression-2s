@@ -1,6 +1,6 @@
 # Description: Allows user to select props to set as doors that auto fade when members that are added are in range of the doors
 
-@name Auto Door
+@name Auto Doors
 @inputs 
 @outputs 
 @persist DoorCheck AntiSpam DoorMode C D Distance DoorOpenTime
@@ -43,7 +43,7 @@ printColor(vec(255,0,255),"[DOOR] ",vec(255,255,255),"/doormode is turned on by 
     Distances = array()
     DistanceCheck = array()
     Member[1,entity] = owner()
-    entity():setName(""+owner():name()+"'s E2 Door")
+    entity():setName(""+owner():name()+"'s E2 Doors")
 }
 
 interval(200)
