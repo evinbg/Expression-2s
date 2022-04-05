@@ -1,3 +1,5 @@
+# Description: Allows user to select props to set as doors that auto fade when members that are added are in range of the doors
+
 @name Auto Door
 @inputs 
 @outputs 
