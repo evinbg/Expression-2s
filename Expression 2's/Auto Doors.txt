@@ -181,6 +181,9 @@ for(J = 1, Doors:count()){
                 Player = TempPlayer
                 Distances[J,number] = 1
             }
+            else{
+                Distances[J,number] = 0
+            }
         }
     }
     else{
