@@ -151,6 +151,7 @@ if(chatClk(owner())){
     if(L[1,string] == "/clean"){
         hideChat(1)
         holoDeleteAll()
+        A = 2
         printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Cleaned")
     }
     if(L[1,string] == "/scale"){
