@@ -183,7 +183,7 @@ if(changed(Hilt) & Hilt == 1){
 if(changed(Hilt) & Hilt == 2){
     printColor(vec(255,0,255),"[Lightsaber] ",vec(255,0,0),"Off")
     Hilt = 0
-    Timer = 1
+    Timer = 0
     streamStop(1)
     streamStop(2)
 }
