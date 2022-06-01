@@ -451,6 +451,7 @@ if(chatClk(owner())){
         }
     }
     if(L[1,string] == "/stopmusic"){
+        hideChat(1)
         streamStop(2)
         printColor(vec(255,0,255),"[Lightsaber] ",vec(255,0,0),"Music stopped")
     }
