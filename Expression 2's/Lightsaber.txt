@@ -402,6 +402,7 @@ if(chatClk(owner())){
 if(chatClk(owner())){
     if(L[1,string] == "/custom"){
         hideChat(1)
+        RGB = 0
         R = L[2,string]:toNumber()
         G = L[3,string]:toNumber()
         B = L[4,string]:toNumber()
