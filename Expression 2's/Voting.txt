@@ -1,19 +1,19 @@
 # Description: Allows the user to utilize chat as a way of collecting votes from other players
 
 @name Voting
-@inputs
+@inputs 
 @outputs [Member, MemberVote1, MemberVote2]:array
 @persist VoteCount Count1 Count2 Start [Reason, Command1, Command2, Vote1, Vote2]:string Target:entity
-@trigger
+@trigger 
         
 #          EDIT THESE:
 #+------------------------------+
-    Reason = "Do you like to watch movies?"
+    Reason = "Yes or no?"
     
-    Vote1 = "Yes"
+    Vote1 = "yes"
     Command1 = "/yes"
     
-    Vote2 = "No"
+    Vote2 = "no"
     Command2 = "/no"
 #+------------------------------+
 
@@ -25,22 +25,23 @@ if(first()){
     Member[1,entity] = noentity()
     MemberVote1[1,entity] = noentity()
     MemberVote2[1,entity] = noentity()
-    printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),"
+    printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),"
 - Type \"/start\" to start the vote
+- Type \"/stop\" to stop the vote
 - Edit the voting in the E2 code")
 }
 
 interval(100)
 runOnChat(1)
 
-L = lastSpoke():lastSaid():explode(" ")
+L = lastSpoke():lastSaid():lower():explode(" ")
 LO = owner():lastSaid():lower():explode(" ")
 
 if(chatClk(lastSpoke())){
     if(LO[1,string] == "/start"){
         hideChat(1)
         Start = 1
-        concmd("say /ooc "+Reason+" | Type "+Command1+" to vote "+Vote1+" | Type "+Command2+" to vote "+Vote2+"")
+        concmd("say "+Reason+" | Type "+Command1+" to vote "+Vote1+" | Type "+Command2+" to vote "+Vote2+"")
     }
 }
 
@@ -59,10 +60,10 @@ if(Start == 1){
                                 Member2Check = 0
                                 Count1++
                                 Count2--
-                                printColor(vec(255,0,255),"[Vote]: ",vec(0,255,0),""+Target:name()+" changed their vote to "+Vote1+"")
-                                printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),"Total Votes: ",vec(255,0,255),VoteCount)
-                                printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),""+Vote1+" Count: ",vec(255,0,255),Count1)
-                                concmd("say /ooc "+Reason+" | "+Target:name()+" changed their vote to "+Vote1+" | "+Vote1+": "+Count1+" | "+Vote2+": "+Count2+" | Total: "+VoteCount+"")
+                                printColor(vec(255,0,255),"[Vote] ",vec(0,255,0),""+Target:name()+" changed their vote to "+Vote1+"")
+                                printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),"Total Votes: ",vec(255,0,255),VoteCount)
+                                printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),""+Vote1+" Count: ",vec(255,0,255),Count1)
+                                concmd("say "+Reason+" | "+Target:name()+" changed their vote to "+Vote1+" | "+Vote1+": "+Count1+" | "+Vote2+": "+Count2+" | Total: "+VoteCount+"")
                                 break
                             }
                             else{
@@ -71,7 +72,7 @@ if(Start == 1){
                             Member2Check = 1
                         }
                         if(Member2Check == 1){
-                            printColor(vec(255,0,255),"[Vote]: ",vec(255,0,0),""+Target:name()+" has already voted for "+Vote1+"")
+                            printColor(vec(255,0,255),"[Vote] ",vec(255,0,0),""+Target:name()+" has already voted for "+Vote1+"")
                         }
                         break
                     }
@@ -82,10 +83,10 @@ if(Start == 1){
                     MemberVote1:pushEntity(Target)
                     Count1++
                     VoteCount++
-                    printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),""+Target:name()+" has voted: ",vec(255,0,255),Vote1)
-                    printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),"Total Votes: ",vec(255,0,255),VoteCount)
-                    printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),""+Vote1+" Count: ",vec(255,0,255),Count1)
-                    concmd("say /ooc "+Reason+" | "+Target:name()+" voted "+Vote1+" | "+Vote1+": "+Count1+" | "+Vote2+": "+Count2+" | Total: "+VoteCount+"")
+                    printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),""+Target:name()+" has voted: ",vec(255,0,255),Vote1)
+                    printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),"Total Votes: ",vec(255,0,255),VoteCount)
+                    printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),""+Vote1+" Count: ",vec(255,0,255),Count1)
+                    concmd("say "+Reason+" | "+Target:name()+" voted "+Vote1+" | "+Vote1+": "+Count1+" | "+Vote2+": "+Count2+" | Total: "+VoteCount+"")
                 }
             }
         }
@@ -102,10 +103,10 @@ if(Start == 1){
                                 Member1Check = 0
                                 Count2++
                                 Count1--
-                                printColor(vec(255,0,255),"[Vote]: ",vec(0,255,0),""+Target:name()+" changed their vote to "+Vote2+"")
-                                printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),"Total Votes: ",vec(255,0,255),VoteCount)
-                                printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),""+Vote2+" Count: ",vec(255,0,255),Count2)
-                                concmd("say /ooc "+Reason+" | "+Target:name()+" changed their vote to "+Vote2+" | "+Vote1+": "+Count1+" | "+Vote2+": "+Count2+" | Total: "+VoteCount+"")
+                                printColor(vec(255,0,255),"[Vote] ",vec(0,255,0),""+Target:name()+" changed their vote to "+Vote2+"")
+                                printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),"Total Votes: ",vec(255,0,255),VoteCount)
+                                printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),""+Vote2+" Count: ",vec(255,0,255),Count2)
+                                concmd("say "+Reason+" | "+Target:name()+" changed their vote to "+Vote2+" | "+Vote1+": "+Count1+" | "+Vote2+": "+Count2+" | Total: "+VoteCount+"")
                                 break
                             }
                             else{
@@ -114,7 +115,7 @@ if(Start == 1){
                             Member1Check = 1
                         }
                         if(Member1Check == 1){
-                            printColor(vec(255,0,255),"[Vote]: ",vec(255,0,0),""+Target:name()+" has already voted for "+Vote2+"")
+                            printColor(vec(255,0,255),"[Vote] ",vec(255,0,0),""+Target:name()+" has already voted for "+Vote2+"")
                         }
                         break
                     }
@@ -125,10 +126,10 @@ if(Start == 1){
                     MemberVote2:pushEntity(Target)
                     Count2++
                     VoteCount++
-                    printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),""+Target:name()+" has voted: ",vec(255,0,255),Vote2)
-                    printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),"Total Votes: ",vec(255,0,255),VoteCount)
-                    printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),""+Vote2+" Count: ",vec(255,0,255),Count2)
-                    concmd("say /ooc "+Reason+" | "+Target:name()+" voted "+Vote2+" | "+Vote1+": "+Count1+" | "+Vote2+": "+Count2+" | Total: "+VoteCount+"")
+                    printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),""+Target:name()+" has voted: ",vec(255,0,255),Vote2)
+                    printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),"Total Votes: ",vec(255,0,255),VoteCount)
+                    printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),""+Vote2+" Count: ",vec(255,0,255),Count2)
+                    concmd("say "+Reason+" | "+Target:name()+" voted "+Vote2+" | "+Vote1+": "+Count1+" | "+Vote2+": "+Count2+" | Total: "+VoteCount+"")
                 }
             }
         }
@@ -153,9 +154,13 @@ if(chatClk(owner())){
     }
     if(LO[1,string] == "/totals"){
         hideChat(1)
-        printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),"Total Votes: ",vec(255,0,255),VoteCount)
-        printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),""+Vote1+" Count: ",vec(255,0,255),Count1)
-        printColor(vec(255,0,255),"[Vote]: ",vec(255,255,255),""+Vote2+" Count: ",vec(255,0,255),Count2)
+        printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),"Total Votes: ",vec(255,0,255),VoteCount)
+        printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),""+Vote1+" Count: ",vec(255,0,255),Count1)
+        printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),""+Vote2+" Count: ",vec(255,0,255),Count2)
+    }
+    if(LO[1,string] == "/stop"){
+        Start = 0
+        printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),"Stopped the vote")
     }
 }
 
