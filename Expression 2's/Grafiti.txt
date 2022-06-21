@@ -108,7 +108,7 @@ if(chatClk(owner())){
         elseif(L[2,string] == "rgb"){
             hideChat(1)
             RGB = 1
-            printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Color: ",vec(random(255),random(255),random(255)),"RGB")
+            printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Color: ",vec(255,0,0),"R",vec(0,255,0),"G",vec(0,0,255),"B")
         }
         else{
             hideChat(1)
