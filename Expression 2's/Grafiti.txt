@@ -111,6 +111,7 @@ if(chatClk(owner())){
             printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Color: ",vec(random(255),random(255),random(255)),"RGB")
         }
         else{
+            hideChat(1)
             printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Color not found. Type \"/colors\" to see a list of the colors")
         }
     }
