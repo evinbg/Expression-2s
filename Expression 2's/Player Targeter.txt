@@ -1,13 +1,13 @@
 # Description: Targets players using chat commands and displays current information about targeted player
 
-@name Playa
+@name Player Targeter
 @inputs 
 @outputs 
 @persist Target:entity Name:string Weapon:string Health Team:string Disround Distance
 @trigger 
 
-if(first()){ 
-    printColor(vec(255,0,255),"[Targeter] ",vec(255,255,255),"Commands: \n- Type /t <player> to target someone\n- Type /stop to stop targeting")
+if(first()){
+printColor(vec(255,0,255),"[Targeter] ",vec(255,255,255),"Commands: \n- Type /t <player> to target someone\n- Type /stop to stop targeting")
     Target = noentity()
     holoCreate(1)
     holoModel(1,"hq_sphere")
@@ -45,15 +45,17 @@ if(chatClk(owner())){
             printColor(vec(255,0,255),"[Targeter] ",vec(255,255,255),"Targeting: "+Target:name()+"")
         }
         if(Target:isPlayer() == 0){
-            printColor(vec(255,0,255),"[Targeter] ",vec(255,0,0),"Couldn't find target")
+            holoAlpha(1,0)
             holoAlpha(2,0)
+            printColor(vec(255,0,255),"[Targeter] ",vec(255,0,0),"Couldn't find target")
         }
     }
     if(L[1,string] == "/stop"){
         hideChat(1)
-        printColor(vec(255,0,255),"[Targeter] ",vec(255,0,0),"Stopped targeting")
         Target = noentity()
+        holoAlpha(1,0)
         holoAlpha(2,0)
+        printColor(vec(255,0,255),"[Targeter] ",vec(255,0,0),"Stopped targeting")
     }
 }
 
@@ -62,6 +64,7 @@ if(Target:isPlayer()){
     holoAng(2,(Dir:toAngle() + ang(90,0,0)))
     holoPos(2,owner():pos() + vec(0,0,30) + owner():forward() * 100)
     holoAlpha(2,255)
+    holoAlpha(1,255)
     Name = Target:name()
     Weapon = Target:weapon():type():replace("m9k_",""):replace("csgo_",""):replace("weapon_",""):replace("sent_",""):replace("_"," ")
     Distance = owner():pos():distance(Target:pos())
