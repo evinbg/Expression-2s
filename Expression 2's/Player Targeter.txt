@@ -46,7 +46,6 @@ if(chatClk(owner())){
         }
         if(Target:isPlayer() == 0){
             printColor(vec(255,0,255),"[Targeter] ",vec(255,0,0),"Couldn't find target")
-            holoScale(2,vec(0,0,0))
             holoAlpha(2,0)
         }
     }
