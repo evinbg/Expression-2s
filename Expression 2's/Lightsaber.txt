@@ -5,16 +5,9 @@
 
 if(first()){
     printColor(vec(255,0,255),"[Lightsaber] ",vec(255,255,255),"Commands:")
-    printColor(vec(255,255,255),"- Toggle on and off by pressing \"G\"\n
-                    - Toggle saber by pressing \"H\"")
-    printColor(vec(255,255,255),"- Type \"/color <color>\" to change the color of your 
-                    lightsaber\n
-                    - Type \"/colors\" to see a list of the colors")
-    printColor(vec(255,255,255),"- Type \"/sound <on or off>\" to turn on and off the 
-                    sounds\n
-                    - Type \"/play <theme, march, or duel>\" to play Star Wars 
-                    music\n
-                    - Type \"/stopmusic\" to stop the music")
+    printColor(vec(255,255,255),"- Toggle on and off by pressing \"G\"\n- Toggle saber by pressing \"H\"")
+    printColor(vec(255,255,255),"- Type \"/color <color>\" to change the color of your lightsaber\n- Type \"/colors\" to see a list of the colors")
+    printColor(vec(255,255,255),"- Type \"/sound <on or off>\" to turn on and off the sounds\n- Type \"/play <theme, march, or duel>\" to play Star Wars music\n- Type \"/stopmusic\" to stop the music")
     
     Color = vec(0,255,0)
     RGB = 0
