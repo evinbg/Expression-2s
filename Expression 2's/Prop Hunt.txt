@@ -15,6 +15,7 @@ if(first()){
     AntiSpam = 1
     holoCreate(1)
     holoScale(1,vec(0,0,0))
+    holoAlpha(1,0)
     owner():setMaterial("")
     owner():weapon():setAlpha(255)
     owner():setColor(255,255,255,255)
@@ -47,6 +48,7 @@ if(owner():keyPressed("t") & owner():aimEntity():isValid() & AntiSpam == 1){
 
 if(owner():keyPressed("g") & AntiSpam == 1){
     holoScale(1,vec(0,0,0))
+    holoAlpha(1,0)
     owner():setMaterial("")
     owner():weapon():setAlpha(255)
     Entity = noentity()
@@ -68,13 +70,16 @@ if(Check == 1){
     owner():setMaterial("models/effects/vol_light001")
     owner():setColor(0,0,0,0)
     owner():weapon():setAlpha(0)
-    holoScale(1,vec(1,1,1))
+    holoAlpha(1,255)
+    Check = 2
 }
 
 if(Check == 0){
     owner():weapon():setAlpha(255)
     owner():setMaterial("")
     owner():setColor(255,255,255,255)
+    holoAlpha(1,0)
+    Check = 2
 }
 
 if(last()){
