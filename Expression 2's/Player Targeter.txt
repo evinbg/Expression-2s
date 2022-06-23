@@ -1,12 +1,12 @@
 # Description: Targets players using chat commands and displays current information about targeted player
 
-@name Player Targeter
+@name Playa
 @inputs 
 @outputs 
 @persist Target:entity Name:string Weapon:string Health Team:string Disround Distance
 @trigger 
 
-if(first()){   
+if(first()){ 
     printColor(vec(255,0,255),"[Targeter] ",vec(255,255,255),"Commands: \n- Type /t <player> to target someone\n- Type /stop to stop targeting")
     Target = noentity()
     holoCreate(1)
@@ -15,10 +15,13 @@ if(first()){
     holoColor(1,vec(255,0,0))
     holoShadow(1,0)
     holoDisableShading(1,1)
+    holoAlpha(1,0)
+    
     holoCreate(2)
     holoModel(2,"cone")
     holoColor(2,vec(255,0,0))
-    holoScale(2,vec(0,0,0))
+    holoScale(2,vec(2,2,2))
+    holoAlpha(2,0)
     entity():propNotSolid(1)
     entity():setColor(0,0,0,0)
 }
@@ -44,13 +47,14 @@ if(chatClk(owner())){
         if(Target:isPlayer() == 0){
             printColor(vec(255,0,255),"[Targeter] ",vec(255,0,0),"Couldn't find target")
             holoScale(2,vec(0,0,0))
+            holoAlpha(2,0)
         }
     }
     if(L[1,string] == "/stop"){
         hideChat(1)
         printColor(vec(255,0,255),"[Targeter] ",vec(255,0,0),"Stopped targeting")
         Target = noentity()
-        holoScale(2,vec(0,0,0))
+        holoAlpha(2,0)
     }
 }
 
@@ -58,7 +62,7 @@ if(Target:isPlayer()){
     Dir = Target:pos() - holoEntity(2):pos()
     holoAng(2,(Dir:toAngle() + ang(90,0,0)))
     holoPos(2,owner():pos() + vec(0,0,30) + owner():forward() * 100)
-    holoScale(2,vec(2,2,2))
+    holoAlpha(2,255)
     Name = Target:name()
     Weapon = Target:weapon():type():replace("m9k_",""):replace("csgo_",""):replace("weapon_",""):replace("sent_",""):replace("_"," ")
     Distance = owner():pos():distance(Target:pos())
