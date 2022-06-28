@@ -1,25 +1,31 @@
-# Description: Auto wirelinks a wire camera controller to allow user to spectate players
+# Description: Auto wirelinks a wire camera controller to allow user to spectate players or move around freely
 
 @name Spectator
 @inputs 
-@persist I P Target:entity CamEnt:entity Cam:wirelink
-@outputs On 
+@persist I P Target:entity CamEnt:entity Cam:wirelink Free Spec Pos:vector Speed
+@outputs On
 @trigger 
 
 if(first()){
     On = 0
+    Free = 0
+    Spec = 0
     Target = entity()
+    Pos = Target:pos() + vec(0,0,Target:height() * 1.5)
+    Speed = 15
     findIncludePlayerProps(owner())
     findByClass("gmod_wire_cameracontroller")
     findSortByDistance(entity():pos())
     
     printColor(vec(255,0,255),"[Spec] ",vec(255,255,255),"Commands:
-- /spec <name>
+- /spec <name> | Spectate a certain person
+- /free | Allows you to move your camera around freely
 - Press P to toggle on and off")
 
     if(find()){
         CamEnt = findResult(1)
         Cam = CamEnt:wirelink()
+        Cam["Position",vector] = Pos
         printColor(vec(255,0,255),"[Spec] ",vec(0,255,0),"Camera controller found")
     }
     else{
@@ -36,7 +42,39 @@ LS = owner():lastSaid():lower():explode(" ")
 P = owner():keyPressed("p")
 
 Cam["Activated",number] = On
-Cam["Position",vector] = Target:pos() + vec(0,0,Target:height() * 1.5)
+
+if(On == 1 & Spec == 1){
+    Pos = Target:pos() + vec(0,0,Target:height() * 1.5)
+    Cam["Position",vector] = Pos
+}
+
+if(On == 1 & Free == 1){
+    Cam["Position",vector] = Pos
+    if(owner():keyPressed("i") | owner():keyPressed("w")){
+        Pos = Pos + owner():eyeAngles():forward() * Speed
+    }
+    if(owner():keyPressed("k") | owner():keyPressed("s")){
+        Pos = Pos - owner():eyeAngles():forward() * Speed
+    }
+    if(owner():keyPressed("j") | owner():keyPressed("a")){
+        Pos = Pos - owner():eyeAngles():right() * Speed
+    }
+    if(owner():keyPressed("l") | owner():keyPressed("d")){
+        Pos = Pos + owner():eyeAngles():right() * Speed
+    }
+    if(owner():keyPressed("space")){
+        Pos = Pos + vec(0,0,5)
+    }
+    if(owner():keyPressed("lctrl")){
+        Pos = Pos + vec(0,0,-5)
+    }
+    if(owner():keyPressed("lshift") | owner():keyPressed("rshift")){
+        Speed = 30
+    }
+    else{
+        Speed = 10
+    }
+}
 
 if(clk("check")){
     findIncludePlayerProps(owner())
@@ -75,9 +113,20 @@ if(chatClk(owner()) & LS[1,string] == "/spec"){
         Target = TargetTemp
         On = 1
         I = 1
+        Free = 0
+        Spec = 1
         printColor(vec(255,0,255),"[Spec] ",vec(255,255,255),"Now spectating "+Target:name()+"")
     }
     else{
         printColor(vec(255,0,255),"[Spec] ",vec(255,0,0),"Couldn't find a player named \""+LS[2,string]+"\"")
     }
+}
+
+if(chatClk(owner()) & LS[1,string] == "/free"){
+    hideChat(1)
+    On = 1
+    I = 1
+    Spec = 0
+    Free = 1
+    printColor(vec(255,0,255),"[Spec] ",vec(255,255,255),"Free mode activated. You can use WASD or IJKL to move")
 }
