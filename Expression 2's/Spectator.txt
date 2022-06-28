@@ -65,7 +65,7 @@ if(On == 1 & Free == 1){
     if(owner():keyPressed("space")){
         Pos = Pos + vec(0,0,5)
     }
-    if(owner():keyPressed("lcontrol")){
+    if(owner():keyPressed("lcontrol") | owner():keyPressed("rcontrol")){
         Pos = Pos - vec(0,0,5)
     }
     if(owner():keyPressed("lshift") | owner():keyPressed("rshift")){
