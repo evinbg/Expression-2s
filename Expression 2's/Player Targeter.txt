@@ -7,7 +7,7 @@
 @trigger 
 
 if(first()){
-printColor(vec(255,0,255),"[Targeter] ",vec(255,255,255),"Commands: \n- Type /t <player> to target someone\n- Type /stop to stop targeting")
+    printColor(vec(255,0,255),"[Targeter] ",vec(255,255,255),"Commands: \n- Type /t <player> to target someone\n- Type /stop to stop targeting")
     Target = noentity()
     holoCreate(1)
     holoModel(1,"hq_sphere")
