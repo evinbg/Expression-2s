@@ -1,0 +1,79 @@
+# Description: Creates a scale model of the targeted player's props out of holos
+
+@name Scale Model
+@persist Props:array I Target:entity P
+
+if(first()){
+    I = 0
+    P = 0
+    printColor(vec(255,0,255),"[Mini] ",vec(255,255,255),"
+- /create <name> | Creates the props of the targeted player")
+}
+
+interval(100)
+runOnChat(1)
+
+LS = owner():lastSaid():lower():explode(" ")
+
+if(chatClk(owner()) & LS[1,string] == "/create"){
+    hideChat(1)
+    TargetTemp = findPlayerByName(LS[2,string])
+    if(TargetTemp:isPlayer()){
+        Target = TargetTemp
+        findIncludePlayerProps(Target)
+        findExcludeClass("player")
+        findInSphere(entity():pos(), 100000)
+        Props = findToArray()
+        timer("create", 151)
+        printColor(vec(255,0,255),"[Mini] ",vec(255,255,255),"Creating around "+Props:count()+" props from "+Target:name()+"")
+    }
+    else{
+        printColor(vec(255,0,255),"[Mini] ",vec(255,0,0),"Couldn't find a player named \""+LS[2,string]+"\"")
+    }
+}
+
+if(clk("create")){
+    P++
+    if(Props:count() < P){
+        for(V = 1, Props:count()){
+            holoVisible(V, owner(),1)
+            holoVisible(V, players(),1)
+        }
+        holoPos(1, entity():pos() + vec(0,0,50))
+        printColor(vec(255,0,255),"[Mini] ",vec(0,255,0),"Done")
+    }
+    else{
+        Prop = Props[P, entity]
+        if(Prop:isWeapon() == 0){
+            I++
+            printColor(vec(255,0,255),"[Mini] ",vec(255,255,0),I)
+            if(I == 1){
+                holoCreate(I)
+                holoVisible(I, owner(),0)
+                holoVisible(I, players(),0)
+                holoPos(I, Prop:pos())
+                holoModel(I, Prop:model())
+                holoScale(I, vec(1) / 10)
+                holoAng(I, Prop:angles())
+                holoMaterial(I, Prop:getMaterial())
+                holoColor(I, Prop:getColor())
+                holoAlpha(I, Prop:getAlpha())
+                holoParent(I, entity())
+            }
+            else{
+                holoCreate(I)
+                holoVisible(I, owner(),0)
+                holoVisible(I, players(),0)
+                holoPos(I, Props[1,entity]:toWorld(Props[1,entity]:toLocal(Prop:pos()) / 10))
+                holoModel(I, Prop:model())
+                holoScale(I, vec(1) / 10)
+                holoAng(I, Prop:angles())
+                holoMaterial(I, Prop:getMaterial())
+                holoColor(I, Prop:getColor())
+                holoAlpha(I, Prop:getAlpha())
+                holoParent(I, holoEntity(1))
+            }
+        }
+        timer("create", 151)
+    }
+}
