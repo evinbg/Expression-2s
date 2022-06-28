@@ -1,0 +1,189 @@
+# Description: Create a space where only the people inside can observe
+
+@name Dimension Creator
+@inputs 
+@outputs 
+@persist P1:vector P2:vector Midpoint:vector RGBColor:vector MainPos:vector
+@persist AntiSpam Select1 Select2 Check1 Check2 Auto C Done Create
+@trigger 
+
+if(first()){
+    printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"
+- Select points by pressing T
+- /start | Starts an automatic point selection proccess
+- /select <1 , 2> | Choose a specific selection point
+- /create | Creates the holo from the two points
+- /clear | Clears the holos")
+    
+    AntiSpam = 1
+    Select1 = 0
+    Select2 = 0
+    Check1 = 0
+    Check2 = 0
+    Auto = 0
+    Done = 0
+    Create = 0
+    
+    MainPos = vec(-64,-2144,-11140) # Center
+    Players = array()
+    timer("create", 500)
+    
+    holoCreate(999)
+    holoColor(999, vec(255,255,255))
+    holoScale(999, vec(1,1,1))
+    holoPos(999, MainPos)
+    holoAlpha(999, 0)
+    
+    holoCreate(1)
+    holoAlpha(1, 0)
+    holoScale(1, vec(0.5,0.5,0.5))
+    holoDisableShading(1, 1)
+    holoMaterial(1, "debug/debugportals")
+    
+    holoCreate(2)
+    holoAlpha(2, 0)
+    holoScale(2, vec(0.5,0.5,0.5))
+    holoDisableShading(2, 1)
+    holoMaterial(2, "debug/debugportals")
+    
+    holoCreate(3)
+    holoAlpha(3, 0)
+}
+
+interval(200)
+runOnChat(1)
+
+L = owner():lastSaid():lower():explode(" ")
+
+if(chatClk(owner())){
+    if(L[1,string] == "/select"){
+        hideChat(1)
+        if(L[2,string] == "1"){
+            Select1 = 1
+            Select2 = 0
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Select coordinate 1")
+        }
+        if(L[2,string] == "2"){
+            Select1 = 0
+            Select2 = 1
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Select coordinate 2")
+        }
+    }
+    if(L[1,string] == "/clear"){
+        hideChat(1)
+        holoAlpha(3, 0)
+        Select1 = 0
+        Select2 = 0
+        Check1 = 0
+        Check2 = 0
+        Auto = 0
+        Done = 0
+        holoAlpha(1, 0)
+        holoAlpha(2, 0)
+        printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Cleared")
+    }
+    if(L[1,string] == "/start"){
+        hideChat(1)
+        Auto = 1
+        Select1 = 1
+        Check1 = 0
+        Check2 = 0
+        holoAlpha(3, 0)
+        printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Select coordinate 1")
+    }
+    if(L[1,string] == "/create"){
+        hideChat(1)
+        if(Check1 == 1 & Check2 == 1){
+            Create = 1
+            printColor(vec(255,0,255),"[Creator] ",vec(0,255,0),"Dimension created")
+        }
+        else{
+            printColor(vec(255,0,255),"[Creator] ",vec(255,0,0),"Select two points before creating the dimension")
+        }
+    }
+}
+
+if(owner():keyPressed("t") & AntiSpam == 1 & Select1 == 1){
+    P1 = owner():aimPos()
+    printColor(vec(255,0,255),"[Creator] ",vec(0,255,0),"Coordinate 1:",vec(255,255,255),"
+"+round(P1,2):toString()+"")
+    Select1 = 0
+    Check1 = 1
+    Create = 1
+    holoPos(1, P1)
+    holoAlpha(1, 100)
+    if(Auto == 1){
+        Select2 = 1
+        Auto = 0
+        printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Select coordinate 2")
+    }
+    AntiSpam = 0
+    timer("spam",500)
+}
+
+if(owner():keyPressed("t") & AntiSpam == 1 & Select2 == 1){
+    P2 = owner():aimPos()
+    printColor(vec(255,0,255),"[Creator] ",vec(0,255,0),"Coordinate 2:",vec(255,255,255),"
+"+round(P2,2):toString()+"")
+    Select2 = 0
+    Check2 = 1
+    Create = 1
+    holoPos(2, P2)
+    holoAlpha(2, 100)
+    AntiSpam = 0
+    timer("spam",500)
+}
+
+if(Check1 == 1 & Check2 == 1 & Create == 1){
+    Midpoint = vec(((P1:x() + P2:x()) / 2), ((P1:y() + P2:y()) / 2), ((P1:z() + P2:z()) / 2))
+    printColor(vec(255,0,255),"[Creator] ",vec(0,0,255),"Midpoint:",vec(255,255,255),"
+"+round(Midpoint,2):toString()+"")
+    Create = 0
+    Done = 1
+    holoAlpha(1, 0)
+    holoAlpha(2, 0)
+    
+    X = abs(P1:x() - P2:x())
+    Y = abs(P1:y() - P2:y())
+    Z = abs(P1:z() - P2:z())
+    if(Z == 0){
+        Z = 0.1
+    }
+    
+    printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"
+X: "+round(X,2)+"
+Y: "+round(Y,2)+"
+Z: "+round(Z,2)+"")
+    
+    holoPos(3, Midpoint)
+    holoScaleUnits(3, vec(-X, -Y, -Z))
+    holoDisableShading(3, 1)
+    holoColor(3, vec(20,20,20))
+    holoMaterial(3, "debug/debugportals")
+    holoAlpha(3, 255)
+}
+
+RGBColor = hsv2rgb(vec(C*5,1,1))
+
+if(C == 720){
+    C = 0
+}
+
+C++
+
+holoColor(3, RGBColor)
+
+if(Done == 1){
+    findByClass("player")
+    findInBox(P1, P2)
+    Players = findToArray()
+}
+
+for(K = 3, 10){
+    holoVisible(K, players(), 0)
+    holoVisible(K, Players, 1)
+}
+
+if(clk("spam")){
+    AntiSpam = 1
+}
