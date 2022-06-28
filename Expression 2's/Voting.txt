@@ -37,7 +37,7 @@ runOnChat(1)
 L = lastSpoke():lastSaid():lower():explode(" ")
 LO = owner():lastSaid():lower():explode(" ")
 
-if(chatClk(lastSpoke())){
+if(chatClk(owner())){
     if(LO[1,string] == "/start"){
         hideChat(1)
         Start = 1
