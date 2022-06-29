@@ -8,7 +8,7 @@
 @trigger 
 
 #[ 
-! Animations may be differ between player models !
+! Animations may differ between player models !
 
 /t <player>: The holo targets the specific player
 /follow: The model follows you wherever the target goes
@@ -36,7 +36,7 @@ if(first()){
     /scale <number>")
     
     Target = owner()
-    Model = "models/mossman.mdl"
+    Model = "models/Eli.mdl"
     Anim = 3
     Speed = 12
     SpeedConst = Speed
@@ -69,7 +69,7 @@ if(chatClk(owner())){
         Tar = findPlayerByName(LS[2,string])
         if(Tar:isPlayer() == 1){
             Target = Tar
-            printColor(vec(255,0,255),"[Follower] ",vec(255,255,255),"Targeting "+Target:name()+"")
+            printColor(vec(255,0,255),"[Follower] ",vec(255,255,255),"Targeting: "+Target:name()+"")
         }
         if(Tar:isPlayer() == 0){
             printColor(vec(255,0,255),"[Follower] ",vec(255,0,0),"Couldn't find a player")
