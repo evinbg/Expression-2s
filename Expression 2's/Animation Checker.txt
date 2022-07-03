@@ -23,7 +23,6 @@ interval(100)
 runOnChat(1)
 
 LS = owner():lastSaid():lower():explode(" ")
-holoScale(1,vec(Scale,Scale,Scale))
 
 if(chatClk(owner())){
     if(LS[1,string] == "/anim"){
@@ -41,6 +40,7 @@ if(chatClk(owner())){
     if(LS[1,string] == "/scale"){
         hideChat(1)
         Scale = LS[2,string]:toNumber()
+        holoScale(1,vec(Scale,Scale,Scale))
         printColor(vec(0,0,255),"Scale: ",vec(255,255,255),""+Scale+"")
     }
 }
