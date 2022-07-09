@@ -7,7 +7,7 @@ if(first()){
     I = 0
     P = 0
     Create = 0
-    printColor(vec(255,0,255),"[Mini] ",vec(255,255,255),"
+    printColor(vec(255,0,255),"[Scale] ",vec(255,255,255),"
 - /create <name> | Creates the props of the targeted player")
 }
 
@@ -19,7 +19,7 @@ LS = owner():lastSaid():lower():explode(" ")
 if(chatClk(owner()) & LS[1,string] == "/create"){
     hideChat(1)
     if(Create == 1){
-        printColor(vec(255,0,255),"[Mini] ",vec(255,255,255),"The E2 needed to reset. Enter the command again.")
+        printColor(vec(255,0,255),"[Scale] ",vec(255,255,255),"The E2 needed to reset. Enter the command again.")
         reset()
     }
     TargetTemp = findPlayerByName(LS[2,string])
@@ -36,28 +36,29 @@ if(chatClk(owner()) & LS[1,string] == "/create"){
         findInSphere(entity():pos(), 100000)
         Props = findToArray()
         timer("create", 151)
-        printColor(vec(255,0,255),"[Mini] ",vec(255,255,255),"Creating around "+Props:count()+" props from "+Target:name()+"")
+        printColor(vec(255,0,255),"[Scale] ",vec(255,255,255),"Creating around "+Props:count()+" props from "+Target:name()+"")
     }
     else{
-        printColor(vec(255,0,255),"[Mini] ",vec(255,0,0),"Couldn't find a player named \""+LS[2,string]+"\"")
+        printColor(vec(255,0,255),"[Scale] ",vec(255,0,0),"Couldn't find a player named \""+LS[2,string]+"\"")
     }
 }
 
 if(clk("create")){
     P++
     if(Props:count() < P){
+        holoPos(1, entity():pos() + vec(0,0,50))
         for(V = 1, Props:count()){
             holoVisible(V, owner(),1)
             holoVisible(V, players(),1)
         }
-        holoPos(1, entity():pos() + vec(0,0,50))
-        printColor(vec(255,0,255),"[Mini] ",vec(0,255,0),"Done")
+        timer("done", 1000)
     }
     else{
         Prop = Props[P, entity]
         if(Prop:isWeapon() == 0){
             I++
-            printColor(vec(255,0,255),"[Mini] ",vec(255,255,0),I)
+            entity():setName("Creating "+Target:name()+"'s scale...\n("+I+" / "+Props:count()+")")
+            printColor(vec(255,0,255),"[Scale] ",vec(255,255,0),I)
             if(I == 1){
                 holoCreate(I)
                 holoVisible(I, owner(),0)
@@ -87,4 +88,9 @@ if(clk("create")){
         }
         timer("create", 151)
     }
+}
+
+if(clk("done")){
+    entity():setName("Scale Model of "+Target:name()+"'s props")
+    printColor(vec(255,0,255),"[Scale] ",vec(0,255,0),"Done")
 }
