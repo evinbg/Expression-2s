@@ -1,0 +1,148 @@
+# Description: Creates an animation of a bending/wobbling prop using numerous holos and clipping
+
+@name Prop Animation
+@inputs 
+@outputs 
+@persist Model:string Count P C I Time Bend Start Speed
+@trigger 
+
+#[
+Models that work well:
+- models/props_interiors/Furniture_Lamp01a.mdl
+- models/props_trainstation/payphone001a.mdl
+- models/props_c17/FurnitureSink001a.mdl
+- models/props_c17/gravestone002a.mdl
+- models/props_junk/Shovel01a.mdl
+- models/props_trainstation/clock01.mdl
+- models/props_trainstation/TrackSign03.mdl
+- models/props_wasteland/controlroom_filecabinet002a.mdl
+- models/props_lab/lockerdoorleft.mdl
+- models/props_c17/Lockers001a.mdl
+- models/props_borealis/borealis_door001a.mdl
+- models/props_c17/FurnitureWashingmachine001a.mdl
+]#
+
+if(first()){
+    Model = "models/props_interiors/Furniture_Lamp01a.mdl"
+    Count = 75 # Essentially the number of frames (Higher = Smoother)
+    Bend = 30 # Degree of the bendiness
+    Time = 10 # Time it takes to generate the holograms
+    Speed = 150 # Speed of the wobble
+    
+    printColor(vec(255,0,255),"[Bendy] ",vec(255,255,255),"Commands:
+- /bend <number>
+- /speed <number>")
+    
+    Start = 0
+    P = 2
+    C = 1 + Count
+    I = 1
+    
+    holoCreate(0)
+    holoPos(0, entity():pos() + vec(0, 0, 0))
+    holoAng(0, entity():toWorld(ang(0, 0, 0)))
+    holoParent(0, entity())
+    holoModel(0, Model)
+    holoDisableShading(0, 1)
+    holoClipEnabled(0, 1)
+    holoVisible(0, owner(), 0)
+    holoVisible(0, players(), 0)
+    
+    holoCreate(1)
+    holoPos(1, entity():pos() + vec(0,0, holoEntity(0):boxSize():z() / 2))
+    holoAng(1, entity():toWorld(ang(0, 0, 0)))
+    holoModel(1, Model)
+    #holoDisableShading(1, 1)
+    holoClipEnabled(1, 1)
+    
+    timer("create_clip", Time)
+}
+
+interval(100)
+runOnChat(1)
+
+if(clk("create_clip")){
+    holoCreate(C)
+    #holoScale(C, vec(0.05,10,0.05))
+    holoPos(C, holoEntity(1):pos() - vec(0,0,(holoEntity(0):boxSize():z() / 2)) + vec(0,0,(holoEntity(0):boxSize():z() / Count) * (C - Count)))
+    holoDisableShading(C,1)
+    holoVisible(C, owner(), 0)
+    holoVisible(C, players(), 0)
+    #print(P)
+    C++
+    if(C <= (Count * 2)){
+        timer("create_clip", Time)
+    }
+    if(C > (Count * 2)){
+        timer("create_prop", Time)
+        printColor(vec(255,0,255),"[Bendy] ",vec(0,255,0),"Done with clip holos")
+    }
+}
+
+if(clk("create_prop")){
+    holoCreate(P)
+    holoPos(P, holoEntity(1):pos() + vec(0,0,0))
+    holoModel(P, Model)
+    #holoDisableShading(P,1)
+    holoClipEnabled(P, 1, 1)
+    holoClipEnabled(P, 2, 1)
+    #print(P)
+    P++
+    if(P <= Count){
+        timer("create_prop", Time)
+    }
+    if(P > Count){
+        timer("clip", Time)
+        printColor(vec(255,0,255),"[Bendy] ",vec(0,255,0),"Done with prop holos")
+    }
+}
+
+if(clk("clip")){
+    holoClip(I, 1, vec(0, 0, 0), vec(0, 0, -1), holoEntity(Count + I))
+    holoParent(I, holoEntity(0))
+    holoParent(Count + I, holoEntity(I))
+    if(I > 1){
+        holoClip(I, 2, vec(0,0,0), vec(0,0,1), holoEntity((Count + I) - 1))
+    }
+    I++
+    if(I <= Count){
+        timer("clip", Time)
+    }
+    if(I > Count){
+        Start = 1
+        printColor(vec(255,0,255),"[Bendy] ",vec(0,255,0),"Done with clipping")
+    }
+}
+
+Sin = sin(curtime() * Speed)
+Cos = cos(curtime() * Speed)
+
+if(Start == 1){
+    for(S = 1, Count){
+        holoAng(S, holoEntity(0):toWorld(ang(0,0,(((S - 1) * Bend) / Count) * Sin)))
+    }
+}
+
+LS = owner():lastSaid():lower():explode(" ")
+
+if(chatClk(owner())){
+    hideChat(1)
+    if(LS[1,string] == "/bend"){
+        if(LS[2,string]:toNumber() == 0){
+            printColor(vec(255,0,255),"[Bendy] ",vec(255,0,0),"Not a valid input. Please input a number")
+        }
+        else{
+            Bend = LS[2,string]:toNumber()
+            printColor(vec(255,0,255),"[Bendy] ",vec(255,255,255),"Bend: "+Bend+"")
+        }
+    }
+    if(LS[1,string] == "/speed"){
+        if(LS[2,string]:toNumber() == 0){
+            printColor(vec(255,0,255),"[Bendy] ",vec(255,0,0),"Not a valid input. Please input a number")
+        }
+        else{
+            Speed = LS[2,string]:toNumber()
+            printColor(vec(255,0,255),"[Bendy] ",vec(255,255,255),"Speed: "+Speed+"")
+        }
+    }
+}
