@@ -49,7 +49,7 @@ printColor(vec(255,0,255),"[DOOR] ",vec(255,255,255),"/doormode is turned on by 
 interval(200)
 runOnChat(1)
 
-LS = owner():lastSaid():explode(" ")
+LS = owner():lastSaid():lower():explode(" ")
 
 if(DoorMode == 1 & owner():keyPressed("t") & owner():aimEntity():isValid() & owner():aimEntity():owner() == owner() & AntiSpam == 1){
     Entity = owner():aimEntity()
