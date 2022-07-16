@@ -52,7 +52,7 @@ printColor(vec(255,255,255),"- /stop | Stops/pauses the game
 interval(100)
 runOnChat(1)
 
-LS = owner():lastSaid():explode(" ")
+LS = owner():lastSaid():lower():explode(" ")
 
 if(chatClk(owner()) & LS[1,string] == "/add"){
     hideChat(1)
