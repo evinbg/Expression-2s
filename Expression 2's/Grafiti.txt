@@ -15,25 +15,26 @@ if(first()){
     Random = 0
     RGB = 0
     Colors = array("Red", "Green", "Blue", "Yellow", "Pink", "Skyblue", "Orange", "Purple", "White", "Black", "Random", "RGB")
+    holoCreate(1)
+    holoScale(1,vec(Scale,Scale,0.05))
+    holoMaterial(1,"models/wireframe")
+    holoDisableShading(1,1)
 }
 
 interval(100)
 runOnChat(1)
 
-holoCreate(1)
-holoMaterial(1,"models/wireframe")
 holoVisible(1,players(),On)
 holoVisible(1,owner(),On)
-holoDisableShading(1,1)
 holoPos(1,owner():aimPos())
-holoScale(1,vec(Scale,Scale,Scale))
 holoColor(1,Color)
+holoAng(1,owner():aimNormal():toAngle() + ang(90,0,0))
 
 L = owner():lastSaid():lower():explode(" ")
 
 if(On == 1){
     if(owner():keyPressed("e")){
-        timer("draw",50)
+        timer("draw",75)
         if(clk("draw")){
             A++
             holoCreate(A)
@@ -41,7 +42,8 @@ if(On == 1){
             holoColor(A,Color)
             holoParent(A,owner():aimEntity())
             holoDisableShading(A,1)
-            holoScale(A,vec(Scale,Scale,Scale))
+            holoScale(A,vec(Scale,Scale,0.05))
+            holoAng(A,(owner():aimNormal():toAngle() + ang(90,0,0)))
         }
     }
 }
@@ -112,7 +114,7 @@ if(chatClk(owner())){
         }
         else{
             hideChat(1)
-            printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Color not found. Type \"/colors\" to see a list of the colors")
+            printColor(vec(255,0,255),"[Grafiti] ",vec(255,0,0),"Color not found. Type \"/colors\" to see a list of the colors")
         }
     }
 }
@@ -152,12 +154,13 @@ if(chatClk(owner())){
     if(L[1,string] == "/clean"){
         hideChat(1)
         holoDeleteAll()
-        A = 2
+        timer("create",25)
         printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Cleaned")
     }
     if(L[1,string] == "/scale"){
         hideChat(1)
         Scale = L[2,string]:toNumber()
+        holoScale(1,vec(Scale,Scale,0.05))
         printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Scale: ",Color,""+Scale+"")
     }
     if(L[1,string] == "/custom"){
@@ -173,6 +176,13 @@ if(chatClk(owner())){
         timer("list",500)
         printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Colors:")
     }
+}
+
+if(clk("create")){
+    holoCreate(1)
+    holoScale(1,vec(Scale,Scale,0.05))
+    holoMaterial(1,"models/wireframe")
+    holoDisableShading(1,1)
 }
 
 if(clk("list")){
