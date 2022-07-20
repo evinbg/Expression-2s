@@ -15,7 +15,7 @@ if(first()){
 - /removeall | Removes all players from the game
 - /start | Starts the game")
 printColor(vec(255,255,255),"- /stop | Stops/pauses the game
-- /time <number> | Sets time limit for the game (in seconds)
+- /timeset <number> | Sets time limit for the game (in seconds)
 - /timeleft | Tells how much time is left
 - /it <name> | Sets a specific person to be it
 - /list | Lists the players in the game")
@@ -226,10 +226,10 @@ if(chatClk(owner()) & LS[1,string] == "/it"){
     }
 }
 
-if(chatClk(owner()) & LS[1,string] == "/time"){
+if(chatClk(owner()) & LS[1,string] == "/timeset"){
     hideChat(1)
     TimeTemp = LS[2,string]:toNumber()
-    if(TimeTemp == 0){
+    if(TimeTemp == 0 | TimeTemp < 1){
         printColor(vec(255,0,255),"[Tag] ",vec(255,0,0),"Please input a valid time")
     }
     else{
