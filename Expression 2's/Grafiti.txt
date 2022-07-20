@@ -3,17 +3,18 @@
 @name Grafiti
 @inputs 
 @outputs 
-@persist On A C I Scale Random RGB Color:vector Colors:array
+@persist On A C I Scale Random RGB Color:vector Colors:array Limit
 @trigger 
 
 if(first()){
-    printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Commands:\n/turn <on, off>\n/color <color>\n/clean\n/scale <number>\n/colors")
+    printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Commands:\n/turn <on, off>\n/color <color>\n/clean\n/scale <number>\n/colors\n/amount")
     On = 1
     Color = vec(255,255,255)
-    A = 2
+    A = 1
     Scale = 1
     Random = 0
     RGB = 0
+    Limit = 0
     Colors = array("Red", "Green", "Blue", "Yellow", "Pink", "Skyblue", "Orange", "Purple", "White", "Black", "Random", "RGB")
     holoCreate(1)
     holoScale(1,vec(Scale,Scale,0.05))
@@ -46,6 +47,15 @@ if(On == 1){
             holoAng(A,(owner():aimNormal():toAngle() + ang(90,0,0)))
         }
     }
+}
+
+if(A >= holoMaxAmount() & Limit == 0){
+    printColor(vec(255,0,255),"[Grafiti] ",vec(255,0,0),"Holo limit reached!")
+    Limit = 1
+}
+
+if(A < holoMaxAmount() & Limit == 1){
+    Limit = 0
 }
 
 if(chatClk(owner())){
@@ -160,8 +170,12 @@ if(chatClk(owner())){
     if(L[1,string] == "/scale"){
         hideChat(1)
         Scale = L[2,string]:toNumber()
-        holoScale(1,vec(Scale,Scale,0.05))
+        holoScale(1,vec(Scale,Scale,Scale))
         printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Scale: ",Color,""+Scale+"")
+    }
+    if(L[1,string] == "/amount"){
+        hideChat(1)
+        printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),""+holoAmount()+" / "+holoMaxAmount()+"")
     }
     if(L[1,string] == "/custom"){
         hideChat(1)
@@ -183,6 +197,7 @@ if(clk("create")){
     holoScale(1,vec(Scale,Scale,0.05))
     holoMaterial(1,"models/wireframe")
     holoDisableShading(1,1)
+    A = 1
 }
 
 if(clk("list")){
