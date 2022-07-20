@@ -170,7 +170,7 @@ if(chatClk(owner())){
     if(L[1,string] == "/scale"){
         hideChat(1)
         Scale = L[2,string]:toNumber()
-        holoScale(1,vec(Scale,Scale,Scale))
+        holoScale(1,vec(Scale,Scale,0.05))
         printColor(vec(255,0,255),"[Grafiti] ",vec(255,255,255),"Scale: ",Color,""+Scale+"")
     }
     if(L[1,string] == "/amount"){
