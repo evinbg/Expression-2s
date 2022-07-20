@@ -23,9 +23,6 @@ if(first()){
     
     I = 1
     
-    if(Size < 1){
-        printColor(vec(255,0,255),"[Floor] ",vec(255,0,0),"Invalid size. Please input a number that is greater than 1")
-    }
     timer("create", 200)
 }
 
@@ -109,7 +106,10 @@ if(chatClk(owner())){
     if(LS[1,string] == "/size"){
         hideChat(1)
         if(LS[2,string]:toNumber() < 1 | LS[2,string]:toNumber() > 12){
-            printColor(vec(255,0,255),"[Floor] ",vec(255,0,0),"Please enter a number between 1 - 12")
+            printColor(vec(255,0,255),"[Floor] ",vec(255,0,0),"Please enter a whole number between 1 - 12")
+        }
+        elseif(LS[2,string]:toNumber() % 1 != 0){
+            printColor(vec(255,0,255),"[Floor] ",vec(255,0,0),"Please enter a whole number between 1 - 12")
         }
         else{
             for(H = 1, Holos){
