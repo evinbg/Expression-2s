@@ -115,11 +115,12 @@ if(clk("clip")){
 }
 
 Sin = sin(curtime() * Speed)
-Cos = cos(curtime() * Speed)
+Cos = cos(curtime() * Speed * 2) / 2
 
 if(Start == 1){
     for(S = 1, Count){
         holoAng(S, holoEntity(0):toWorld(ang(0,0,(((S - 1) * Bend) / Count) * Sin)))
+        #holoPos(S, holoEntity(0):toWorld(vec(0,0,(((S - 1) * Bend) / Count) * Cos + (holoEntity(0):boxSize():z() / 2))))
     }
 }
 
