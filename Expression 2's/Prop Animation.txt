@@ -63,11 +63,11 @@ if(Start == 1){
     for(S = 1, Count){
         ### Comment and uncomment out these to see different animations:
         
-        holoAng(S, holoEntity(0):toWorld(ang(0,0,(((S - 1) * Bend) / Count) * Sin)))
-        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos2,(((S - 1) * Bend) / Count) * Sin,(((S - 1) * Bend) / Count) * Sin)))
-        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos,(((S - 1) * Bend) / Count) * Sin,(((S - 1) * Bend) / Count) * Sin)))
-        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend * 2) / Count) * Cos2,0,(((S - 1) * Bend) / Count) * Sin)))
-        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend * 2) / Count) * Cos,0,(((S - 1) * Bend) / Count) * Sin)))
+        holoAng(S, holoEntity(0):toWorld(ang(0, 0, (((S - 1) * Bend) / Count) * Sin)))
+        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos2, (((S - 1) * Bend) / Count) * Sin, (((S - 1) * Bend) / Count) * Sin)))
+        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos, (((S - 1) * Bend) / Count) * Sin, (((S - 1) * Bend) / Count) * Sin)))
+        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend * 2) / Count) * Cos2, 0, (((S - 1) * Bend) / Count) * Sin)))
+        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend * 2) / Count) * Cos, 0, (((S - 1) * Bend) / Count) * Sin)))
         holoPos(S, holoEntity(0):toWorld(vec(0,0,(((S - 1) * Bend) / Count) * Cos2 + (holoEntity(0):boxSize():z() / 2))))
     }
 }
