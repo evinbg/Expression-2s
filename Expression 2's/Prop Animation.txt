@@ -3,7 +3,7 @@
 @name Prop Animation
 @inputs 
 @outputs 
-@persist Model:string Count P C I Time Bend Start Speed Sin Cos Cos2
+@persist Model:string Count P C I Time Bend Start Speed Anim Sin Cos Cos2
 @trigger 
 
 #[
@@ -25,14 +25,16 @@ Models that work well:
 
 if(first()){
     Model = "models/props_c17/Lockers001a.mdl"
-    Count = 75 # Essentially the number of frames (Higher = Smoother)
+    Count = 40 # Essentially the number of frames (Higher = Smoother)
     Bend = 30 # Degree of the bendiness
     Time = 20 # Time it takes to generate the holograms
     Speed = 150 # Speed of the wobble
+    Anim = 1
     
     printColor(vec(255,0,255),"[Bendy] ",vec(255,255,255),"Commands:
 - /bend <number>
-- /speed <number>")
+- /speed <number>
+- /anim <1 - 5>")
     
     Start = 0
     P = 2
@@ -60,14 +62,22 @@ if(first()){
 }
 
 if(Start == 1){
-    for(S = 1, Count){
-        ### Comment and uncomment out these to see different animations:
-        
-        holoAng(S, holoEntity(0):toWorld(ang(0, 0, (((S - 1) * Bend) / Count) * Sin)))
-        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos2, (((S - 1) * Bend) / Count) * Sin, (((S - 1) * Bend) / Count) * Sin)))
-        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos, (((S - 1) * Bend) / Count) * Sin, (((S - 1) * Bend) / Count) * Sin)))
-        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend * 2) / Count) * Cos2, 0, (((S - 1) * Bend) / Count) * Sin)))
-        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend * 2) / Count) * Cos, 0, (((S - 1) * Bend) / Count) * Sin)))
+    for(S = 1, Count){     
+        if(Anim == 1){
+            holoAng(S, holoEntity(0):toWorld(ang(0, 0, (((S - 1) * Bend) / Count) * Sin)))
+        }
+        elseif(Anim == 2){
+            holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos2, (((S - 1) * Bend) / Count) * Sin, (((S - 1) * Bend) / Count) * Sin)))
+        }
+        elseif(Anim == 3){
+            holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos, (((S - 1) * Bend) / Count) * Sin, (((S - 1) * Bend) / Count) * Sin)))
+        }
+        elseif(Anim == 4){
+            holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend * 2) / Count) * Cos2, 0, (((S - 1) * Bend) / Count) * Sin)))
+        }
+        elseif(Anim == 5){
+            holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend * 2) / Count) * Cos, 0, (((S - 1) * Bend) / Count) * Sin)))
+        }
         holoPos(S, holoEntity(0):toWorld(vec(0,0,(((S - 1) * Bend) / Count) * Cos2 + (holoEntity(0):boxSize():z() / 2))))
     }
 }
@@ -153,6 +163,16 @@ if(chatClk(owner())){
         else{
             Speed = LS[2,string]:toNumber()
             printColor(vec(255,0,255),"[Bendy] ",vec(255,255,255),"Speed: "+Speed+"")
+        }
+    }
+    if(LS[1,string] == "/anim"){
+        hideChat(1)
+        if(LS[2,string]:toNumber() < 1 | LS[2,string]:toNumber() % 1 != 0 | LS[2,string]:toNumber() > 5){
+            printColor(vec(255,0,255),"[Bendy] ",vec(255,0,0),"Not a valid input. Please input a valid number (1 - 5)")
+        }
+        else{
+            Anim = LS[2,string]:toNumber()
+            printColor(vec(255,0,255),"[Bendy] ",vec(255,255,255),"Anim: "+Anim+"")
         }
     }
 }
