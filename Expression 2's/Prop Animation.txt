@@ -1,9 +1,9 @@
-# Description: Creates an animation of a bending/wobbling prop using numerous holos and clipping
+# Description: Creates animations of a bending/wobbling props using numerous holos and clipping
 
 @name Prop Animation
 @inputs 
 @outputs 
-@persist Model:string Count P C I Time Bend Start Speed
+@persist Model:string Count P C I Time Bend Start Speed Sin Cos Cos2
 @trigger 
 
 #[
@@ -20,13 +20,14 @@ Models that work well:
 - models/props_c17/Lockers001a.mdl
 - models/props_borealis/borealis_door001a.mdl
 - models/props_c17/FurnitureWashingmachine001a.mdl
+- models/props_c17/FurnitureFridge001a.mdl
 ]#
 
 if(first()){
-    Model = "models/props_interiors/Furniture_Lamp01a.mdl"
+    Model = "models/props_c17/Lockers001a.mdl"
     Count = 75 # Essentially the number of frames (Higher = Smoother)
     Bend = 30 # Degree of the bendiness
-    Time = 10 # Time it takes to generate the holograms
+    Time = 20 # Time it takes to generate the holograms
     Speed = 150 # Speed of the wobble
     
     printColor(vec(255,0,255),"[Bendy] ",vec(255,255,255),"Commands:
@@ -56,6 +57,19 @@ if(first()){
     holoClipEnabled(1, 1)
     
     timer("create_clip", Time)
+}
+
+if(Start == 1){
+    for(S = 1, Count){
+        ### Comment and uncomment out these to see different animations:
+        
+        holoAng(S, holoEntity(0):toWorld(ang(0,0,(((S - 1) * Bend) / Count) * Sin)))
+        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos2,(((S - 1) * Bend) / Count) * Sin,(((S - 1) * Bend) / Count) * Sin)))
+        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos,(((S - 1) * Bend) / Count) * Sin,(((S - 1) * Bend) / Count) * Sin)))
+        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend * 2) / Count) * Cos2,0,(((S - 1) * Bend) / Count) * Sin)))
+        #holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend * 2) / Count) * Cos,0,(((S - 1) * Bend) / Count) * Sin)))
+        holoPos(S, holoEntity(0):toWorld(vec(0,0,(((S - 1) * Bend) / Count) * Cos2 + (holoEntity(0):boxSize():z() / 2))))
+    }
 }
 
 interval(100)
@@ -115,20 +129,14 @@ if(clk("clip")){
 }
 
 Sin = sin(curtime() * Speed)
-Cos = cos(curtime() * Speed * 2) / 2
-
-if(Start == 1){
-    for(S = 1, Count){
-        holoAng(S, holoEntity(0):toWorld(ang(0,0,(((S - 1) * Bend) / Count) * Sin)))
-        #holoPos(S, holoEntity(0):toWorld(vec(0,0,(((S - 1) * Bend) / Count) * Cos + (holoEntity(0):boxSize():z() / 2))))
-    }
-}
+Cos = cos(curtime() * Speed)
+Cos2 = cos(curtime() * Speed * 2) / 2
 
 LS = owner():lastSaid():lower():explode(" ")
 
 if(chatClk(owner())){
     if(LS[1,string] == "/bend"){
-    hideChat(1)
+        hideChat(1)
         if(LS[2,string]:toNumber() == 0){
             printColor(vec(255,0,255),"[Bendy] ",vec(255,0,0),"Not a valid input. Please input a number")
         }
@@ -138,7 +146,7 @@ if(chatClk(owner())){
         }
     }
     if(LS[1,string] == "/speed"){
-    hideChat(1)
+        hideChat(1)
         if(LS[2,string]:toNumber() == 0){
             printColor(vec(255,0,255),"[Bendy] ",vec(255,0,0),"Not a valid input. Please input a number")
         }
