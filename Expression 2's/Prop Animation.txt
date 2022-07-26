@@ -44,29 +44,34 @@ if(first()){
     C = 1 + Count
     I = 1
     
-    holoCreate(0)
-    holoPos(0, entity():pos() + vec(0, 0, 0))
-    holoAng(0, entity():toWorld(ang(0, 0, 0)))
-    holoParent(0, entity())
-    holoModel(0, Model)
-    holoDisableShading(0, 1)
-    holoClipEnabled(0, 1)
-    holoVisible(0, owner(), 0)
-    holoVisible(0, players(), 0)
+    if((Count * 2) + 1 >= holoMaxAmount()){
+        printColor(vec(255,0,255),"[Bendy] ",vec(255,0,0),"You need to lower the holo count because it exceeds the server maximum.")
+    }
+    else{
+        holoCreate(0)
+        holoPos(0, entity():pos() + vec(0, 0, 0))
+        holoAng(0, entity():toWorld(ang(0, 0, 0)))
+        holoParent(0, entity())
+        holoModel(0, Model)
+        holoDisableShading(0, 1)
+        holoClipEnabled(0, 1)
+        holoVisible(0, owner(), 0)
+        holoVisible(0, players(), 0)
     
-    holoCreate(1)
-    holoPos(1, entity():pos() + holoEntity(0):massCenter())
-    holoAng(1, entity():toWorld(ang(0, 0, 0)))
-    holoModel(1, Model)
-    holoScale(1, vec(Scale, Scale, Scale))
-    #holoDisableShading(1, 1)
-    holoClipEnabled(1, 1)
+        holoCreate(1)
+        holoPos(1, entity():pos() + holoEntity(0):massCenter())
+        holoAng(1, entity():toWorld(ang(0, 0, 0)))
+        holoModel(1, Model)
+        holoScale(1, vec(Scale, Scale, Scale))
+        #holoDisableShading(1, 1)
+        holoClipEnabled(1, 1)
     
-    LoadTime = round((Time / 1000) * Count * 3 + (Time / 1000) * 4, 2)
+        LoadTime = round((Time / 1000) * Count * 3 + (Time / 1000) * 4, 2)
     
-    printColor(vec(255,0,255),"[Bendy] ",vec(255,255,255),"Approximate Loading Time: "+LoadTime+"s")
+        printColor(vec(255,0,255),"[Bendy] ",vec(255,255,255),"Approximate Loading Time: "+LoadTime+"s")
     
-    timer("create_clip", Time)
+        timer("create_clip", Time)
+    }
 }
 
 if(Start == 1){
