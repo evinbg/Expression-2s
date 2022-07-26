@@ -1,6 +1,6 @@
 # Description: Creates animations of a bending/wobbling props using numerous holos and clipping
 
-@name Prop Animation Testing
+@name Prop Animation
 @inputs 
 @outputs 
 @persist Model:string Count P C I Time Bend Start Speed Scale Anim Bounce Sin Cos Cos2
@@ -59,7 +59,7 @@ if(first()){
         holoVisible(0, players(), 0)
     
         holoCreate(1)
-        holoPos(1, entity():pos() + holoEntity(0):massCenter())
+        holoPos(1, entity():pos() + vec(0, 0, (holoEntity(0):boxSize():z() / 2) * Scale))
         holoAng(1, entity():toWorld(ang(0, 0, 0)))
         holoModel(1, Model)
         holoScale(1, vec(Scale, Scale, Scale))
@@ -106,7 +106,7 @@ if(Start == 1){
             holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos, (((S - 1) * Bend) / Count) * Sin, (((S - 1) * Bend) / Count) * Sin)))
         }
         if(Bounce == 1){
-            holoPos(S, holoEntity(0):toWorld(vec(0,0,(((S - 1) * Bend) / Count) * Cos2)))
+            holoPos(S, holoEntity(0):toWorld(vec(0,0,(((S - 1) * Bend) / Count) * Cos2 + (holoEntity(0):boxSize():z() / 2) * Scale)))
         }
     }
 }
@@ -117,7 +117,7 @@ runOnChat(1)
 if(clk("create_clip")){
     holoCreate(C)
     #holoScale(C, vec(0.05,10,0.05))
-    holoPos(C, holoEntity(1):pos() + vec(0,0,(holoEntity(0):boxSize():z() * Scale / Count) * (C - Count)))
+    holoPos(C, holoEntity(1):pos() - vec(0,0,(holoEntity(0):boxSize():z() / 2) * Scale) + vec(0,0,(holoEntity(0):boxSize():z() / Count) * Scale * (C - Count)))
     holoDisableShading(C,1)
     holoVisible(C, owner(), 0)
     holoVisible(C, players(), 0)
