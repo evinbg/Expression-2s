@@ -21,14 +21,15 @@ Models that work well:
 - models/props_borealis/borealis_door001a.mdl
 - models/props_c17/FurnitureWashingmachine001a.mdl
 - models/props_c17/FurnitureFridge001a.mdl
+- models/props_c17/FurnitureDresser001a.mdl
 ]#
 
 if(first()){
-    Model = "models/props_c17/Lockers001a.mdl"
-    Count = 75 # Essentially the number of frames (Higher = Smoother)
+    Model = "models/props_trainstation/clock01.mdl"
+    Count = 70 # Essentially the number of frames (Higher = Smoother)
     Bend = 30 # Degree of the bendiness
     Speed = 150 # Speed of the wobble
-    Time = 50 # Time it takes to generate the holograms
+    Time = 20 # Time it takes to generate the holograms
     Scale = 0.75 # Changes the scale of the holos
     Anim = 1
     Bounce = 1
@@ -106,7 +107,7 @@ if(Start == 1){
             holoAng(S, holoEntity(0):toWorld(ang((((S - 1) * Bend) / Count) * Cos, (((S - 1) * Bend) / Count) * Sin, (((S - 1) * Bend) / Count) * Sin)))
         }
         if(Bounce == 1){
-            holoPos(S, holoEntity(0):toWorld(vec(0,0,(((S - 1) * Bend) / Count) * Cos2 + (holoEntity(0):boxSize():z() / 2) * Scale)))
+            holoPos(S, holoEntity(0):toWorld(vec(0,0,(((S - 1) * Bend) / Count) * ((Cos2 * Scale) / 4) + (holoEntity(0):boxSize():z() / 2) * Scale)))
         }
     }
 }
@@ -121,7 +122,6 @@ if(clk("create_clip")){
     holoDisableShading(C,1)
     holoVisible(C, owner(), 0)
     holoVisible(C, players(), 0)
-    #print(P)
     C++
     if(C <= (Count * 2)){
         timer("create_clip", Time)
@@ -140,7 +140,6 @@ if(clk("create_prop")){
     #holoDisableShading(P,1)
     holoClipEnabled(P, 1, 1)
     holoClipEnabled(P, 2, 1)
-    #print(P)
     P++
     if(P <= Count){
         timer("create_prop", Time)
