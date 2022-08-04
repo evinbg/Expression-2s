@@ -3,16 +3,17 @@
 @name Warping Cube
 @inputs 
 @outputs 
-@persist Size HoloCount Scale Distance I MoveUp MoveSide MoveOtherSide CreateSpeed Done
+@persist Size HoloCount Scale Distance I MoveUp MoveSide MoveOtherSide CreateSpeed Done Offset:vector
 @persist Holos:table
 @trigger 
 
 if(first()){
     Size = 4
     HoloCount = Size * Size * Size
-    Scale = 2
+    Scale = 1
     CreateSpeed = 10
     Distance = 80
+    Offset = vec((-(Scale * 12) * Size / 2) + Scale * 6, (-(Scale * 12) * Size / 2) + Scale * 6, 0)
     
     printColor(vec(255,0,255),"[Warp] ",vec(255,255,255),"Commands:
 - /scale <0.01 - 50>
@@ -34,16 +35,10 @@ runOnChat(1)
 if(clk("create")){
     holoCreate(I)
     holoScale(I, vec(Scale, Scale, Scale))
-    local Position = entity():pos() + vec((Scale * 12) * MoveSide, (Scale * 12) * MoveOtherSide, (Scale * 12) * MoveUp)
+    local Position = entity():pos() + vec((Scale * 12) * MoveSide, (Scale * 12) * MoveOtherSide, (Scale * 12) * MoveUp) + Offset
     holoPos(I, vec(0, 0, ((Scale * 12) / 2)) + Position)
     holoDisableShading(I, 1)
-    
-    if(I == 1){
-        holoParent(I, entity())
-    }
-    if(I > 1){
-        holoParent(I, holoEntity(1))
-    }
+    holoParent(I, entity())
     
     local Pos = holoEntity(I):pos() - entity():pos()
     local Holo = holoEntity(I)
@@ -72,7 +67,6 @@ if(clk("create")){
 }
 
 if(clk("done")){
-    holoPos(1, entity():pos() + vec((-(Scale * 12) * Size / 2) + Scale * 6, (-(Scale * 12) * Size / 2) + Scale * 6, (Scale * 12) / 2))
     foreach(J:number, Data:table = Holos){
         Data["pos",vector] = holoEntity(J):pos() - entity():pos()
     }
@@ -85,13 +79,15 @@ ClosestPlayer = findClosest(entity():pos())
 if(Done == 1){
     foreach(K:number, Data:table = Holos){
         
+        #local LP = entity():toLocal(ClosestPlayer:attachmentPos("chest"))
         local LP = entity():toLocal(ClosestPlayer:pos())
         local LLP = LP - Data["pos",vector]
         local Dist = LP:distance(Data["pos",vector])
         
         if(Dist < (Distance * Scale)){
             Data["holo",entity]:setPos(entity():toWorld(Data["pos",vector] - LLP:normalized() * ((Distance * Scale) - LLP:length())))
-            Data["holo",entity]:setColor(vec((Dist / (Distance * Scale)) * 255, (Dist / (Distance * Scale)) * 255, (Dist / (Distance * Scale)) * 255))
+            Data["holo",entity]:setColor(hsv2rgb(360 *(Dist / (Distance * Scale)),1,1))
+            #Data["holo",entity]:setColor(vec((Dist / (Distance * Scale)) * 255, (Dist / (Distance * Scale)) * 255, (Dist / (Distance * Scale)) * 255))
         }
         else{
             Data["holo",entity]:setPos(entity():toWorld(Data["pos",vector]))
