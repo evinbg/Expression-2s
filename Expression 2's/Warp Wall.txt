@@ -3,8 +3,8 @@
 @name Warp Wall
 @inputs 
 @outputs 
-@persist Count Distance I MoveUp MoveSide MoveOtherSide CreateSpeed Done Height Width Check
-@persist Props:table Offset:vector Tag:string
+@persist Count Distance I MoveUp MoveSide MoveOtherSide CreateSpeed Done Height Width Check Scale
+@persist Props:table Offset:vector Tag:string Model:string
 @persist Member:array [TempMember, It]:entity
 @trigger
 
@@ -15,10 +15,10 @@ if(first()){
     Scale = 1
     CreateSpeed = 300
     Distance = 60
-    Offset = vec((-11 * Width / 2) + 11 / 2, 0, 11 / 2)
+    Model = "models/hunter/plates/plate025x025.mdl"
     
     CreateTime = (CreateSpeed / 1000) * Count
-    Tag = "Warp Door"
+    Tag = "Warp Wall"
     printColor(vec(255,0,255),"["+Tag+"] ",vec(255,255,255),"Commands:
 - /delete | Deletes the E2 spawned props and E2
 - /add <name> | Adds a player to the whitelist
@@ -44,12 +44,15 @@ interval(100)
 runOnChat(1)
 
 if(clk("create")){
-    local E = propSpawn("models/hunter/plates/plate025x025.mdl", 1)
-    local Position = entity():pos() + vec(11 * MoveSide, 0, 11 * MoveUp) + Offset
+    local E = propSpawn(Model, 1)
+    Offset = vec((-(E:aabbSize():x() - 0.8625) * Width / 2) + ((E:aabbSize():x()  - 0.8625) / 2), 0, (E:aabbSize():y() - 0.8625) / 2)
+    local Position = entity():pos() + vec((E:aabbSize():x() - 0.8625) * MoveSide, 0, (E:aabbSize():y() - 0.8625) * MoveUp) + Offset
+    print(E:aabbSize():x():toString())
     E:setPos(Position)
     E:setAng(ang(0, 0, 90))
     E:setMaterial("models/debug/debugwhite")
     E:propShadow(0)
+    Scale = E:aabbSize():x() / 11.8625
     
     local Pos = E:pos() - entity():pos()
     local Plate = E
@@ -84,7 +87,7 @@ if(clk("done")){
 
 findByClass("player")
 ClosestPlayer = findClosest(entity():pos())
-if(ClosestPlayer:pos():distance(entity():pos()) <= Distance){
+if(ClosestPlayer:pos():distance(entity():pos()) <= Distance * Scale){
     for(K = 1, Member:count()){
         if(ClosestPlayer == Member[K,entity]){
             Check = 1
@@ -103,8 +106,8 @@ if(Done == 1){
         local LLP = LP - Data["pos",vector]
         local Dist = LP:distance(Data["pos",vector])
         
-        if(Dist < Distance & Check == 1){
-            Data["plate",entity]:setPos(entity():toWorld(Data["pos",vector] - LLP:normalized() * (Distance * 1.3 - LLP:length())))
+        if(Dist < Distance * (Data["plate",entity]:aabbSize():x() / 12) & Check == 1){
+            Data["plate",entity]:setPos(entity():toWorld(Data["pos",vector] - LLP:normalized() * (Distance * Scale * 1.3 - LLP:length())))
             Data["plate",entity]:setColor(hsv2rgb(360 *(Dist / (Distance)),1,1))
             Data["plate",entity]:setAng(entity():angles() + ang(0,0,90))
             #Data["plate",entity]:setColor(vec((Dist / (Distance)) * 255, (Dist / (Distance)) * 255, (Dist / (Distance)) * 255))
