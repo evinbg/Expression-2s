@@ -45,7 +45,7 @@ runOnChat(1)
 
 if(clk("create")){
     local E = propSpawn(Model, 1)
-    Offset = vec((-(E:aabbSize():x() - 0.8625) * Width / 2) + ((E:aabbSize():x()  - 0.8625) / 2), 0, (E:aabbSize():y() - 0.8625) / 2)
+    Offset = vec((-(E:aabbSize():x() - 0.8625) * Width / 2) + ((E:aabbSize():x() - 0.8625) / 2), 0, (E:aabbSize():y() - 0.8625) / 2)
     local Position = entity():pos() + vec((E:aabbSize():x() - 0.8625) * MoveSide, 0, (E:aabbSize():y() - 0.8625) * MoveUp) + Offset
     print(E:aabbSize():x():toString())
     E:setPos(Position)
