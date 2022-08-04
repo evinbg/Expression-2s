@@ -1,6 +1,6 @@
 # Description: Creates a door/wall with whitelist features that warps to open
 
-@name Warp Wall
+@name Warp Wall Scalable
 @inputs 
 @outputs 
 @persist Count Distance I MoveUp MoveSide MoveOtherSide CreateSpeed Done Height Width Check Scale
@@ -47,7 +47,6 @@ if(clk("create")){
     local E = propSpawn(Model, 1)
     Offset = vec((-(E:aabbSize():x() - 0.8625) * Width / 2) + ((E:aabbSize():x() - 0.8625) / 2), 0, (E:aabbSize():y() - 0.8625) / 2)
     local Position = entity():pos() + vec((E:aabbSize():x() - 0.8625) * MoveSide, 0, (E:aabbSize():y() - 0.8625) * MoveUp) + Offset
-    print(E:aabbSize():x():toString())
     E:setPos(Position)
     E:setAng(ang(0, 0, 90))
     E:setMaterial("models/debug/debugwhite")
