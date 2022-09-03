@@ -33,6 +33,7 @@ if(first()){
 printColor(vec(255,0,255),"[DOOR] ",vec(255,255,255),"/doormode is turned on by default. When you're done setting your doors by pressing 'T' on them, turn off door mode by typing \"/doormode off\"")
 
     DoorOpenTime = 5000
+    Distance = 70
     AntiSpam = 1
     DoorMode = 1
     C = 0
@@ -175,7 +176,7 @@ if(clk("list")){
 for(J = 1, Doors:count()){
     findByClass("player")
     TempPlayer = findClosest(Doors[J,entity]:pos())
-    if(TempPlayer:pos():distance(Doors[J,entity]:pos()) <= 60 ){
+    if(TempPlayer:pos():distance(Doors[J,entity]:pos()) <= Distance ){
         for(K = 1, Member:count()){
             if(TempPlayer == Member[K,entity]){
                 Player = TempPlayer
