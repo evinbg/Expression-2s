@@ -113,6 +113,7 @@ if(chatClk(owner())){
             MoveUp = 0
             MoveOtherSide = 0
             MoveSide = 0
+            Offset = vec((-(Scale * 12) * Size / 2) + Scale * 6, (-(Scale * 12) * Size / 2) + Scale * 6, 0)
             timer("create", 200)
             printColor(vec(255,0,255),"[Warp] ",vec(255,255,255),"Scale: "+LS[2,string]:toNumber()+"")
         }
