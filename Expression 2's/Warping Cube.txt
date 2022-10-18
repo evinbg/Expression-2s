@@ -10,7 +10,7 @@
 if(first()){
     Size = 4
     HoloCount = Size * Size * Size
-    Scale = 1
+    Scale = 2
     CreateSpeed = 10
     Distance = 80
     Offset = vec((-(Scale * 12) * Size / 2) + Scale * 6, (-(Scale * 12) * Size / 2) + Scale * 6, 0)
@@ -41,9 +41,11 @@ if(clk("create")){
     holoParent(I, entity())
     
     local Pos = holoEntity(I):pos() - entity():pos()
+    local Ang = holoEntity(I):angles()
     local Holo = holoEntity(I)
     Holos[I,table] = table(
         "pos" = Pos,
+        "ang" = Ang,
         "holo" = Holo
         )
     
@@ -79,18 +81,19 @@ ClosestPlayer = findClosest(entity():pos())
 if(Done == 1){
     foreach(K:number, Data:table = Holos){
         
-        #local LP = entity():toLocal(ClosestPlayer:attachmentPos("chest"))
         local LP = entity():toLocal(ClosestPlayer:pos())
         local LLP = LP - Data["pos",vector]
         local Dist = LP:distance(Data["pos",vector])
         
         if(Dist < (Distance * Scale)){
             Data["holo",entity]:setPos(entity():toWorld(Data["pos",vector] - LLP:normalized() * ((Distance * Scale) - LLP:length())))
+            Data["holo",entity]:setAng(entity():toWorld(ang(Data["pos",vector] - LLP:normalized() * ((Distance * Scale) - LLP:length()))))
             Data["holo",entity]:setColor(hsv2rgb(360 *(Dist / (Distance * Scale)),1,1))
             #Data["holo",entity]:setColor(vec((Dist / (Distance * Scale)) * 255, (Dist / (Distance * Scale)) * 255, (Dist / (Distance * Scale)) * 255))
         }
         else{
             Data["holo",entity]:setPos(entity():toWorld(Data["pos",vector]))
+            Data["holo",entity]:setAng(entity():toWorld(Data["ang",angle]))
             Data["holo",entity]:setColor(vec(255,255,255))
         }  
     }
