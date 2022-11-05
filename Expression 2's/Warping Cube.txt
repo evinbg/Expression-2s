@@ -43,10 +43,12 @@ if(clk("create")){
     local Pos = holoEntity(I):pos() - entity():pos()
     local Ang = holoEntity(I):angles()
     local Holo = holoEntity(I)
+    local Count = I
     Holos[I,table] = table(
         "pos" = Pos,
         "ang" = Ang,
-        "holo" = Holo
+        "holo" = Holo,
+        "count" = Count
         )
     
     MoveSide++
@@ -86,14 +88,22 @@ if(Done == 1){
         local Dist = LP:distance(Data["pos",vector])
         
         if(Dist < (Distance * Scale)){
-            Data["holo",entity]:setPos(entity():toWorld(Data["pos",vector] - LLP:normalized() * ((Distance * Scale) - LLP:length())))
-            Data["holo",entity]:setAng(entity():toWorld(ang(Data["pos",vector] - LLP:normalized() * ((Distance * Scale) - LLP:length()))))
+            #Data["holo",entity]:setPos(entity():toWorld(Data["pos",vector] - LLP:normalized() * ((Distance * Scale) - LLP:length())))
+            #Data["holo",entity]:setAng(entity():toWorld(ang(Data["pos",vector] - LLP:normalized() * ((Distance * Scale) - LLP:length()))))
+            
+            holoPos(Data["count",number], entity():toWorld(Data["pos",vector] - LLP:normalized() * ((Distance * Scale) - LLP:length())))
+            holoAng(Data["count",number], entity():toWorld(ang(Data["pos",vector] - LLP:normalized() * ((Distance * Scale) - LLP:length()))))
+            
             Data["holo",entity]:setColor(hsv2rgb(360 *(Dist / (Distance * Scale)),1,1))
             #Data["holo",entity]:setColor(vec((Dist / (Distance * Scale)) * 255, (Dist / (Distance * Scale)) * 255, (Dist / (Distance * Scale)) * 255))
         }
         else{
-            Data["holo",entity]:setPos(entity():toWorld(Data["pos",vector]))
-            Data["holo",entity]:setAng(entity():toWorld(Data["ang",angle]))
+            #Data["holo",entity]:setPos(entity():toWorld(Data["pos",vector]))
+            #Data["holo",entity]:setAng(entity():toWorld(Data["ang",angle]))
+            
+            holoAng(Data["count",number], entity():toWorld(Data["ang",angle]))
+            holoPos(Data["count",number], entity():toWorld(Data["pos",vector]))
+            
             Data["holo",entity]:setColor(vec(255,255,255))
         }  
     }
@@ -139,6 +149,7 @@ if(chatClk(owner())){
             MoveOtherSide = 0
             MoveSide = 0
             HoloCount = Size * Size * Size
+            Offset = vec((-(Scale * 12) * Size / 2) + Scale * 6, (-(Scale * 12) * Size / 2) + Scale * 6, 0)
             timer("create", 200)
             printColor(vec(255,0,255),"[Warp] ",vec(255,255,255),"Size: "+LS[2,string]:toNumber()+"")
         }
