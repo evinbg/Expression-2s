@@ -3,7 +3,7 @@
 @name Dance Floor
 @inputs 
 @outputs 
-@persist Size Holos Speed Scale I MoveUp MoveSide CreateSpeed
+@persist Size Holos Speed Scale I MoveUp MoveSide CreateSpeed Offset:vector
 @trigger 
 
 if(first()){
@@ -12,6 +12,7 @@ if(first()){
     Speed = 2000 / 50
     Scale = 3
     CreateSpeed = 20
+    Offset = vec((-(Scale * 12) * Size / 2) + Scale * 6, (-(Scale * 12) * Size / 2) + Scale * 6, 0)
     
     printColor(vec(255,0,255),"[Floor] ",vec(255,255,255),"Commands:
 - /speed <1 - 100>
@@ -31,9 +32,8 @@ runOnChat(1)
 
 if(clk("create")){
     holoCreate(I)
-    holoAlpha(I, 0)
     holoScale(I, vec(Scale, Scale, 0.02))
-    holoPos(I, entity():pos() + vec((Scale * 12) * MoveSide, (Scale * 12) * MoveUp,0))
+    holoPos(I, entity():pos() + vec((Scale * 12) * MoveSide, (Scale * 12) * MoveUp,0) + Offset)
     holoDisableShading(I, 1)
     if(I == 1){
         holoParent(I, entity())
@@ -58,10 +58,6 @@ if(clk("create")){
 }
 
 if(clk("done")){
-    holoPos(1, entity():pos() + vec((-(Scale * 12) * Size / 2) + Scale * 6, (-(Scale * 12) * Size / 2) + Scale * 6,0))
-    for(H = 1, Holos){
-        holoAlpha(H, 255)
-    }
     timer("color", 200)
 }
 
@@ -95,9 +91,7 @@ if(chatClk(owner())){
             I = 1
             MoveUp = 0
             MoveSide = 0
-            for(H = 1, Holos){
-                holoAlpha(H, 0)
-            }
+            Offset = vec((-(Scale * 12) * Size / 2) + Scale * 6, (-(Scale * 12) * Size / 2) + Scale * 6, 0)
             stoptimer("color")
             timer("create", 200)
             printColor(vec(255,0,255),"[Floor] ",vec(255,255,255),"Scale: "+LS[2,string]:toNumber()+"")
@@ -112,14 +106,12 @@ if(chatClk(owner())){
             printColor(vec(255,0,255),"[Floor] ",vec(255,0,0),"Please enter a whole number between 1 - 12")
         }
         else{
-            for(H = 1, Holos){
-                holoAlpha(H, 0)
-            }
             Size = LS[2,string]:toNumber()
             I = 1
             MoveUp = 0
             MoveSide = 0
             Holos = Size * Size
+            Offset = vec((-(Scale * 12) * Size / 2) + Scale * 6, (-(Scale * 12) * Size / 2) + Scale * 6, 0)
             stoptimer("color")
             timer("create", 200)
             printColor(vec(255,0,255),"[Floor] ",vec(255,255,255),"Size: "+LS[2,string]:toNumber()+"")
