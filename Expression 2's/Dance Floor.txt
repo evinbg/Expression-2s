@@ -7,9 +7,9 @@
 @trigger 
 
 if(first()){
-    Size = 6
+    Size = 8
     Holos = Size * Size
-    Speed = 2000 / 50
+    Speed = 1
     Scale = 3
     CreateSpeed = 20
     Offset = vec((-(Scale * 12) * Size / 2) + Scale * 6, (-(Scale * 12) * Size / 2) + Scale * 6, 0)
@@ -63,9 +63,9 @@ if(clk("done")){
 
 if(clk("color")){
     for(H = 1, Holos){
-        holoColor(H, hsv2rgb((360 / Holos) * H * curtime(),1,1))
+        holoColor(H, hsv2rgb((360 / Holos) * H * curtime() * Speed,1,1))
     }
-    timer("color", Speed)
+    timer("color", 20)
 }
 
 LS = owner():lastSaid():lower():explode(" ")
@@ -73,11 +73,11 @@ LS = owner():lastSaid():lower():explode(" ")
 if(chatClk(owner())){
     if(LS[1,string] == "/speed"){
         hideChat(1)
-        if(LS[2,string]:toNumber() < 1 | LS[2,string]:toNumber() > 100){
-            printColor(vec(255,0,255),"[Floor] ",vec(255,0,0),"Please enter a percentage between 1 - 100")
+        if(LS[2,string]:toNumber() < 1 | LS[2,string]:toNumber() > 200){
+            printColor(vec(255,0,255),"[Floor] ",vec(255,0,0),"Please enter a percentage between 1 - 200")
         }
         else{
-            Speed = 2000 / LS[2,string]:toNumber()
+            Speed = LS[2,string]:toNumber() / 100
             printColor(vec(255,0,255),"[Floor] ",vec(255,255,255),"Speed: "+LS[2,string]:toNumber()+"%")
         }
     }
