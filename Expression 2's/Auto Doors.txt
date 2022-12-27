@@ -6,7 +6,7 @@
 @persist DoorCheck AntiSpam DoorMode C D Distance DoorOpenTime
 @persist [Member, Doors, Colors, Materials, Distances, DistanceCheck]:array [Player, TempPlayer, TempMember]:entity
 @trigger 
-
+          
 #          HOW TO USE:
 #+------------------------------+
 #[
@@ -32,10 +32,10 @@ if(first()){
 
 printColor(vec(255,0,255),"[DOOR] ",vec(255,255,255),"/doormode is turned on by default. When you're done setting your doors by pressing 'T' on them, turn off door mode by typing \"/doormode off\"")
 
-    DoorOpenTime = 5000
-    Distance = 70
+    DoorOpenTime = 5000 # this is how long the door will remain open in milliseconds
+    Distance = 70 # this is how far the player will have to be for the door to open
     AntiSpam = 1
-    DoorMode = 1
+    DoorMode = 2
     C = 0
     D = 0
     Doors = array()
@@ -52,7 +52,7 @@ runOnChat(1)
 
 LS = owner():lastSaid():lower():explode(" ")
 
-if(DoorMode == 1 & owner():keyPressed("t") & owner():aimEntity():isValid() & owner():aimEntity():owner() == owner() & AntiSpam == 1){
+if(DoorMode == 2 & owner():keyPressed("t") & owner():aimEntity():isValid() & owner():aimEntity():owner() == owner() & AntiSpam == 1){
     Entity = owner():aimEntity()
     for(I = 1, Doors:count()){
         if(Entity == Doors[I,entity]){
@@ -84,19 +84,27 @@ if(clk("spam")){
 }
 
 if(chatClk(owner()) & LS[1,string] == "/doormode"){
+    hideChat(1)
     if(LS[2,string] == "on"){
-        hideChat(1)
         DoorMode = 1
-        printColor(vec(255,0,255),"[DOOR] ",vec(255,255,255),"Door Adding: ",vec(0,255,0),"On")
     }
     elseif(LS[2,string] == "off"){
-        hideChat(1)
-        DoorMode = 0
-        printColor(vec(255,0,255),"[DOOR] ",vec(255,255,255),"Door Adding: ",vec(255,0,0),"Off")
+        DoorMode = 3
     }
     else{
-        printColor(vec(255,0,255),"[DOOR] ",vec(255,0,0),"Please type either \"on\" or \"off\" after \"/doormode\"")
+        DoorMode++
+        #printColor(vec(255,0,255),"[DOOR] ",vec(255,0,0),"Please type either \"on\" or \"off\" after \"/doormode\"")
     }
+}
+
+if(DoorMode == 1){
+    DoorMode++
+    printColor(vec(255,0,255),"[DOOR] ",vec(255,255,255),"Door Adding: ",vec(0,255,0),"On")
+}
+
+if(DoorMode == 3){
+    DoorMode = 0
+    printColor(vec(255,0,255),"[DOOR] ",vec(255,255,255),"Door Adding: ",vec(255,0,0),"Off")
 }
 
 if(chatClk(owner()) & LS[1,string] == "/add"){
