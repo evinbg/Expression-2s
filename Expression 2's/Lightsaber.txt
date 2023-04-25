@@ -320,16 +320,8 @@ if(chatClk(owner())){
         timer("list",500)
         printColor(vec(255,0,255),"[Lightsaber] ",vec(255,255,255),"Colors:")
     }
-}
-
-if(clk("list")){
-    for(I = 1, Colors:count()){
-        printColor(vec(255,255,255),Colors[I,string])
-    }
-}
-
-if(chatClk(owner())){
-    if(L[1,string] == "/color"){
+    
+    elseif(L[1,string] == "/color"){
         RGB = 0
         if(L[2,string] == "red"){
             hideChat(1)
@@ -390,10 +382,8 @@ if(chatClk(owner())){
             printColor(vec(255,0,255),"[Lightsaber] ",vec(255,255,255),"Color not found. Type \"/colors\" to see a list of the colors")
         }
     }
-}
-
-if(chatClk(owner())){
-    if(L[1,string] == "/custom"){
+    
+    elseif(L[1,string] == "/custom"){
         hideChat(1)
         RGB = 0
         R = L[2,string]:toNumber()
@@ -402,27 +392,26 @@ if(chatClk(owner())){
         Color = vec(R,G,B)
         printColor(vec(255,0,255),"[Lightsaber] ",vec(255,255,255),"Color: ",Color,"Custom")
     }
-}
-
-if(chatClk(owner())){
-    if(L[1,string] == "/sound"){
+    
+    elseif(L[1,string] == "/sound"){
+        hideChat(1)
         if(L[2,string] == "on"){
-            hideChat(1)
             Sound = 1
             printColor(vec(255,0,255),"[Lightsaber] ",vec(255,255,255),"Sound: ",vec(0,255,0),"On")
         }
-        if(L[2,string] == "off"){
-            hideChat(1)
+        elseif(L[2,string] == "off"){
             Sound = 0
             streamStop(1)
             streamStop(2)
             printColor(vec(255,0,255),"[Lightsaber] ",vec(255,255,255),"Sound: ",vec(255,0,0),"Off")
         }
+        else {
+            printColor(vec(255,0,255),"[Lightsaber] ",vec(255,255,255),"Type \"/sound off\" or \"/sound on\"")
+        }
     }
-}
-
-if(chatClk(owner())){
-    if(L[1,string] == "/play"){
+    
+    elseif(L[1,string] == "/play"){
+        hideChat(1)
         if(Sound == 1){
             if(L[2,string] == "theme"){
                 holoEntity(202):streamStart(2,"https://drive.google.com/uc?export=download&id=13aaMBuAsT9b2CgSkhpiZnCWSC0HsZUCu",0.75)
@@ -444,10 +433,17 @@ if(chatClk(owner())){
             printColor(vec(255,0,255),"[Lightsaber] ",vec(255,0,0),"Sound isn't on")
         }
     }
-    if(L[1,string] == "/stopmusic"){
+    
+    elseif(L[1,string] == "/stopmusic"){
         hideChat(1)
         streamStop(2)
         printColor(vec(255,0,255),"[Lightsaber] ",vec(255,0,0),"Music stopped")
+    }
+}
+
+if(clk("list")){
+    for(I = 1, Colors:count()){
+        printColor(vec(255,255,255),Colors[I,string])
     }
 }
 
