@@ -192,7 +192,7 @@ if(chatClk(owner())){
     
     elseif(L[1,string] == "/colors"){
         hideChat(1)
-        timer("list",100)
+        timer("list", 100)
         printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Colors:")
     }
 }
@@ -218,7 +218,7 @@ if(owner():keyPressed("t") & AntiSpam == 1 & Select1 == 1){
         printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Select coordinate 2")
     }
     AntiSpam = 0
-    timer("spam",500)
+    timer("spam", 500)
 }
 
 if(owner():keyPressed("t") & AntiSpam == 1 & Select2 == 1){
@@ -231,7 +231,7 @@ if(owner():keyPressed("t") & AntiSpam == 1 & Select2 == 1){
     holoPos(2, P2)
     holoAlpha(2, 100)
     AntiSpam = 0
-    timer("spam",500)
+    timer("spam", 500)
 }
 
 if(Check1 == 1 & Check2 == 1 & Create == 1){
@@ -251,9 +251,9 @@ if(Check1 == 1 & Check2 == 1 & Create == 1){
     }
     
     printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"
-X: "+round(X,2)+"
-Y: "+round(Y,2)+"
-Z: "+round(Z,2)+"")
+X: "+round(X, 2)+"
+Y: "+round(Y, 2)+"
+Z: "+round(Z, 2)+"")
     
     holoPos(3, Midpoint)
     holoScaleUnits(3, vec(-X, -Y, -Z))
@@ -277,7 +277,7 @@ if(Random == 1){
     Color = vec(random(255),random(255),random(255))
 }
 
-RGBColor = hsv2rgb(vec(C*4,1,1))
+RGBColor = hsv2rgb(vec(C * 4,1,1))
 
 if(C == 720){
     C = 0
