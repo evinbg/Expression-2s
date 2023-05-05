@@ -3,7 +3,7 @@
 @name Dimension Creator
 @inputs 
 @outputs 
-@persist P1:vector P2:vector Midpoint:vector RGBColor:vector MainPos:vector Color:vector Colors:array
+@persist P1:vector P2:vector Midpoint:vector RGBColor:vector Color:vector Colors:array
 @persist AntiSpam Select1 Select2 Check1 Check2 Auto C Done Create RGB
 
 if(first()){
@@ -26,16 +26,7 @@ printColor(vec(255,255,255),"- /create | Creates the holo from the two points
     Create = 0
     Color = vec(0,0,0)
     Colors = array("Red", "Green", "Blue", "Yellow", "Pink", "Skyblue", "Orange", "Purple", "White", "Black", "Random", "RGB")
-    
-    MainPos = vec(-64,-2144,-11140) # Center
     Players = array()
-    timer("create", 500)
-    
-    holoCreate(999)
-    holoColor(999, vec(255,255,255))
-    holoScale(999, vec(1,1,1))
-    holoPos(999, MainPos)
-    holoAlpha(999, 0)
     
     holoCreate(1)
     holoAlpha(1, 0)
