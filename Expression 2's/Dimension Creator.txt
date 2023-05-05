@@ -3,16 +3,17 @@
 @name Dimension Creator
 @inputs 
 @outputs 
-@persist P1:vector P2:vector Midpoint:vector RGBColor:vector MainPos:vector
-@persist AntiSpam Select1 Select2 Check1 Check2 Auto C Done Create
-@trigger 
+@persist P1:vector P2:vector Midpoint:vector RGBColor:vector MainPos:vector Color:vector Colors:array
+@persist AntiSpam Select1 Select2 Check1 Check2 Auto C Done Create RGB
 
 if(first()){
     printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"
 - Select points by pressing T
 - /start | Starts an automatic point selection proccess
-- /select <1 , 2> | Choose a specific selection point
-- /create | Creates the holo from the two points
+- /select <1 , 2> | Choose a specific selection point")
+printColor(vec(255,255,255),"- /create | Creates the holo from the two points
+- /color <color> | Changes the dimension color
+- /colors | Prints a list of the available colors
 - /clear | Clears the holos")
     
     AntiSpam = 1
@@ -23,6 +24,8 @@ if(first()){
     Auto = 0
     Done = 0
     Create = 0
+    Color = vec(0,0,0)
+    Colors = array("Red", "Green", "Blue", "Yellow", "Pink", "Skyblue", "Orange", "Purple", "White", "Black", "Random", "RGB")
     
     MainPos = vec(-64,-2144,-11140) # Center
     Players = array()
@@ -48,6 +51,9 @@ if(first()){
     
     holoCreate(3)
     holoAlpha(3, 0)
+    
+    holoCreate(4)
+    holoAlpha(4, 0)
 }
 
 interval(200)
@@ -69,9 +75,11 @@ if(chatClk(owner())){
             printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Select coordinate 2")
         }
     }
-    if(L[1,string] == "/clear"){
+    
+    elseif(L[1,string] == "/clear"){
         hideChat(1)
         holoAlpha(3, 0)
+        holoAlpha(4, 0)
         Select1 = 0
         Select2 = 0
         Check1 = 0
@@ -82,16 +90,19 @@ if(chatClk(owner())){
         holoAlpha(2, 0)
         printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Cleared")
     }
-    if(L[1,string] == "/start"){
+    
+    elseif(L[1,string] == "/start"){
         hideChat(1)
         Auto = 1
         Select1 = 1
         Check1 = 0
         Check2 = 0
         holoAlpha(3, 0)
+        holoAlpha(4, 0)
         printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Select coordinate 1")
     }
-    if(L[1,string] == "/create"){
+    
+    elseif(L[1,string] == "/create"){
         hideChat(1)
         if(Check1 == 1 & Check2 == 1){
             Create = 1
@@ -100,6 +111,95 @@ if(chatClk(owner())){
         else{
             printColor(vec(255,0,255),"[Creator] ",vec(255,0,0),"Select two points before creating the dimension")
         }
+    }
+    
+    elseif(L[1,string] == "/color"){
+        Random = 0
+        RGB = 0
+        if(L[2,string] == "red"){
+            hideChat(1)
+            Color = vec(255,0,0)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",Color,"Red")
+        }
+        elseif(L[2,string] == "green"){
+            hideChat(1)
+            Color = vec(0,255,0)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",Color,"Green")
+        }
+        elseif(L[2,string] == "blue"){
+            hideChat(1)
+            Color = vec(0,0,255)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",Color,"Blue")
+        }
+        elseif(L[2,string] == "yellow"){
+            hideChat(1)
+            Color = vec(255,255,0)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",Color,"Yellow")
+        }
+        elseif(L[2,string] == "orange"){
+            hideChat(1)
+            Color = vec(255,155,0)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",Color,"Orange")
+        }
+        elseif(L[2,string] == "pink"){
+            hideChat(1)
+            Color = vec(255,0,255)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",Color,"Pink")
+        }
+        elseif(L[2,string] == "purple"){
+            hideChat(1)
+            Color = vec(155,0,255)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",Color,"Purple")
+        }
+        elseif(L[2,string] == "skyblue"){
+            hideChat(1)
+            Color = vec(0,255,255)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",Color,"Sky Blue")
+        }
+        elseif(L[2,string] == "white"){
+            hideChat(1)
+            Color = vec(255,255,255)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",Color,"White")
+        }
+        elseif(L[2,string] == "black"){
+            hideChat(1)
+            Color = vec(0,0,0)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",Color,"Black")
+        }
+        elseif(L[2,string] == "random"){
+            hideChat(1)
+            Random = 1
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",vec(random(255),random(255),random(255)),"Random")
+        }
+        elseif(L[2,string] == "rgb"){
+            hideChat(1)
+            RGB = 1
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",vec(255,0,0),"R",vec(0,255,0),"G",vec(0,0,255),"B")
+        }
+        elseif(L[2,string] == "custom"){
+            hideChat(1)
+            R = L[3,string]:toNumber()
+            G = L[4,string]:toNumber()
+            B = L[5,string]:toNumber()
+            Color = vec(R,G,B)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Color: ",vec(R,G,B),"Custom")
+        }
+        else{
+            hideChat(1)
+            printColor(vec(255,0,255),"[Creator] ",vec(255,0,0),"Color not found. Type \"/colors\" to see a list of the colors")
+        }
+    }
+    
+    elseif(L[1,string] == "/colors"){
+        hideChat(1)
+        timer("list",100)
+        printColor(vec(255,0,255),"[Creator] ",vec(255,255,255),"Colors:")
+    }
+}
+
+if(clk("list")){
+    for(I = 1, Colors:count()){
+        printColor(vec(255,255,255),Colors[I,string])
     }
 }
 
@@ -161,17 +261,34 @@ Z: "+round(Z,2)+"")
     holoColor(3, vec(20,20,20))
     holoMaterial(3, "debug/debugportals")
     holoAlpha(3, 255)
+    
+    holoPos(4, Midpoint)
+    holoScaleUnits(4, vec(-X - 0.01, -Y - 0.01, -Z - 0.01))
+    holoDisableShading(4, 1)
+    holoColor(4, vec(20,20,20))
+    holoMaterial(4, "models/effects/muzzleflash/blurmuzzle")
+    #holoMaterial(4, "engine/depthwrite")
+    holoAlpha(4, 255)
+    holoVisible(4, players(), 1)
+    holoVisible(4, owner(), 1)
 }
 
-RGBColor = hsv2rgb(vec(C*5,1,1))
+if(Random == 1){
+    Color = vec(random(255),random(255),random(255))
+}
+
+RGBColor = hsv2rgb(vec(C*4,1,1))
 
 if(C == 720){
     C = 0
 }
 
-C++
+if(RGB == 1){
+    Color = RGBColor
+    C++
+}
 
-holoColor(3, RGBColor)
+holoColor(3, Color)
 
 if(Done == 1){
     findByClass("player")
@@ -179,7 +296,7 @@ if(Done == 1){
     Players = findToArray()
 }
 
-for(K = 3, 10){
+for(K = 3, 3){
     holoVisible(K, players(), 0)
     holoVisible(K, Players, 1)
 }
