@@ -263,7 +263,7 @@ Z: "+round(Z,2)+"")
     holoAlpha(3, 255)
     
     holoPos(4, Midpoint)
-    holoScaleUnits(4, vec(-X - 0.01, -Y - 0.01, -Z - 0.01))
+    holoScaleUnits(4, vec(X + 0.01, Y + 0.01, Z + 0.01))
     holoDisableShading(4, 1)
     holoColor(4, vec(20,20,20))
     holoMaterial(4, "models/effects/muzzleflash/blurmuzzle")
