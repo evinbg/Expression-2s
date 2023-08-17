@@ -172,6 +172,7 @@ if(chatClk(owner())){
         printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),""+Vote2+" Count: ",vec(255,0,255),Count2)
     }
     if(LO[1,string] == "/stop"){
+        hideChat(1)
         Start = 0
         timer("stop", 1500)
         printColor(vec(255,0,255),"[Vote] ",vec(255,255,255),"Stopped the vote")
